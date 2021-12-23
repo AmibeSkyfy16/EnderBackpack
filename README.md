@@ -2,8 +2,13 @@
 
 ## Setup
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+This mod add a backpack, but only one backpack (uncraftable)
+Even if you duplicate the item, the content of the duplicated item will be identical to the first one.
 
-## License
+## Why this mod?
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+Today minecraft contains a lot more items than before, especially with 1.18 and not to mention the modes that add a lot of items.
+Players need more space in their inventory.
+Most of the backpack mods can be crafted easily and have their own content, so there is no interest in shulkerboxes anymore.
+
+this mod is the perfect compromise
