@@ -1,16 +1,19 @@
 package ch.skyfy.singlebackpack;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.collection.DefaultedList;
 
 public class BackpackInventory implements Inventory {
 
     private DefaultedList<ItemStack> list;
-    private int size;
+    private final int size;
 
     private final ItemStack container;
     // backpack where nbt-data will be written
@@ -59,17 +62,17 @@ public class BackpackInventory implements Inventory {
 
     @Override
     public void markDirty() {
-        this.write();
+        this.write(null);
     }
 
     @Override
     public void onOpen(PlayerEntity player) {
-        this.read();
+        this.read(player);
     }
 
     @Override
     public void onClose(PlayerEntity player) {
-        this.write();
+        this.write(player);
     }
 
     @Override
@@ -82,15 +85,31 @@ public class BackpackInventory implements Inventory {
         this.list.clear();
     }
 
-    public void write() {
+    public void write(PlayerEntity player) {
         if (this.container != null) {
-            this.container.getOrCreateNbt().put("BackpackInventory", Inventories.writeNbt(new NbtCompound(), this.list, true));
+            player = MinecraftClient.getInstance().player;
+            if(player != null){
+                var nbt = new NbtCompound();
+                nbt.put("BackpackInventory", Inventories.writeNbt(nbt, this.list, true));
+
+                player.writeNbt(nbt);
+                player.writeCustomDataToNbt(nbt);
+                player.saveNbt(nbt);
+            }else System.out.println("Player is null");
+//            this.container.getOrCreateNbt().put("BackpackInventory", Inventories.writeNbt(new NbtCompound(), this.list, true));
         }
     }
 
-    public void read() {
+    public void read(PlayerEntity player) {
         if (this.container != null) {
-            Inventories.readNbt(this.container.getOrCreateNbt().getCompound("BackpackInventory"), this.list);
+            if(player != null){
+                // How get NbtCompounds.getCompound("BackpackInventory")
+                for (NbtElement nbtElement : player.getAttributes().toNbt()) {
+                    System.out.println("nbtElement " + nbtElement.asString());
+                    System.out.println("getNbtType " + nbtElement.getNbtType().toString());
+                }
+            }
+//            Inventories.readNbt(this.container.getOrCreateNbt().getCompound("BackpackInventory"), this.list);
         }
     }
 }
