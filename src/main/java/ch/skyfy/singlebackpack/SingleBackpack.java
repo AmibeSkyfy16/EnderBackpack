@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -16,9 +17,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.GameRules;
 
+import java.nio.file.Path;
+
 public class SingleBackpack implements ModInitializer {
 
     public static final String MODID = "single_backpack";
+
+    public static Path MOD_CONFIG_DIR = FabricLoader.getInstance().getConfigDir().resolve("SingleBackpack");
 
     public static final GameRules.Key<GameRules.BooleanRule> GIVE_PLAYER_BACKPACK = GameRuleRegistry.register("givePlayerBackpack", GameRules.Category.PLAYER, GameRuleFactory.createBooleanRule(true));
 
@@ -32,23 +37,33 @@ public class SingleBackpack implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        createConfigDir();
+
         ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-            if(!world.getGameRules().getBoolean(GIVE_PLAYER_BACKPACK))return;
+            if (!world.getGameRules().getBoolean(GIVE_PLAYER_BACKPACK)) return;
             if (entity instanceof ServerPlayerEntity player) {
                 var hasBackpack = false;
-                for(var slot = 0; slot < player.getInventory().size(); slot++) {
+                for (var slot = 0; slot < player.getInventory().size(); slot++) {
                     System.out.println("getTranslationKey + " + player.getInventory().getStack(slot).getTranslationKey());
                     if (player.getInventory().getStack(slot).getTranslationKey().equalsIgnoreCase("item.single_backpack.backpack")) {
                         hasBackpack = true;
                     }
                 }
-                if(!hasBackpack) {
+                if (!hasBackpack) {
                     player.dropItem(new ItemStack(BACKPACK), false);
                     player.sendMessage(Text.of("Your backpack has been dropped, be sure to get it back"), false);
                 }
             }
         });
         Registry.register(Registry.ITEM, new Identifier(MODID, "backpack"), BACKPACK);//registers your backpack
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private void createConfigDir() {
+        var configDir = MOD_CONFIG_DIR.toFile();
+        if (!configDir.exists()) configDir.mkdir();
+        var backpacksFolderFile = MOD_CONFIG_DIR.resolve("backpacks").toFile();
+        if (!backpacksFolderFile.exists()) backpacksFolderFile.mkdir();
     }
 
 }

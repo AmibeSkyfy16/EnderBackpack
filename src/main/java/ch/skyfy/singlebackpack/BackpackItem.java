@@ -37,7 +37,7 @@ public class BackpackItem extends Item {
 
                     @Override
                     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-                        return new BackpackScreenHandler(syncId, inv, new BackpackInventory(54, user.getStackInHand(hand)));
+                        return new BackpackScreenHandler(syncId, inv, new BackpackInventory(54, user.getStackInHand(hand), user.getUuidAsString()));
                     }
                 });
             }

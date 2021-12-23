@@ -1,27 +1,33 @@
 package ch.skyfy.singlebackpack;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtIo;
 import net.minecraft.util.collection.DefaultedList;
+
+import java.io.File;
+import java.io.IOException;
+
+import static ch.skyfy.singlebackpack.SingleBackpack.MOD_CONFIG_DIR;
 
 public class BackpackInventory implements Inventory {
 
-    private DefaultedList<ItemStack> list;
+    private final DefaultedList<ItemStack> list;
+
     private final int size;
 
-    private final ItemStack container;
-    // backpack where nbt-data will be written
+    private final ItemStack container; // backpack where nbt-data will be written
 
-    public BackpackInventory(int size, ItemStack container) {
+    private final File playerFile;
+
+    public BackpackInventory(int size, ItemStack container, String playerUUID) {
         this.list = DefaultedList.ofSize(size, ItemStack.EMPTY);
         this.size = size;
         this.container = container;
+        playerFile = MOD_CONFIG_DIR.resolve("backpacks").resolve(playerUUID + ".dat").toFile();
     }
 
     @Override
@@ -62,17 +68,17 @@ public class BackpackInventory implements Inventory {
 
     @Override
     public void markDirty() {
-        this.write(null);
+        this.write();
     }
 
     @Override
     public void onOpen(PlayerEntity player) {
-        this.read(player);
+        this.read();
     }
 
     @Override
     public void onClose(PlayerEntity player) {
-        this.write(player);
+        this.write();
     }
 
     @Override
@@ -85,31 +91,29 @@ public class BackpackInventory implements Inventory {
         this.list.clear();
     }
 
-    public void write(PlayerEntity player) {
+    public void write() {
         if (this.container != null) {
-            player = MinecraftClient.getInstance().player;
-            if(player != null){
-                var nbt = new NbtCompound();
-                nbt.put("BackpackInventory", Inventories.writeNbt(nbt, this.list, true));
-
-                player.writeNbt(nbt);
-                player.writeCustomDataToNbt(nbt);
-                player.saveNbt(nbt);
-            }else System.out.println("Player is null");
-//            this.container.getOrCreateNbt().put("BackpackInventory", Inventories.writeNbt(new NbtCompound(), this.list, true));
-        }
-    }
-
-    public void read(PlayerEntity player) {
-        if (this.container != null) {
-            if(player != null){
-                // How get NbtCompounds.getCompound("BackpackInventory")
-                for (NbtElement nbtElement : player.getAttributes().toNbt()) {
-                    System.out.println("nbtElement " + nbtElement.asString());
-                    System.out.println("getNbtType " + nbtElement.getNbtType().toString());
-                }
+            var nbtCompound = container.getOrCreateNbt();
+            nbtCompound.put("BackpackInventory", Inventories.writeNbt(new NbtCompound(), list, true));
+            try {
+                NbtIo.write(nbtCompound, playerFile);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-//            Inventories.readNbt(this.container.getOrCreateNbt().getCompound("BackpackInventory"), this.list);
+        }
+
+    }
+
+    public void read() {
+        if (this.container != null) {
+            try {
+                var nbtCompound = NbtIo.read(playerFile);
+                if (nbtCompound == null) return;
+                Inventories.readNbt(nbtCompound.getCompound("BackpackInventory"), this.list);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
 }
