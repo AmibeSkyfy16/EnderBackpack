@@ -29,7 +29,7 @@ public class BackpackScreenHandler extends ScreenHandler {
         this.inventory.onOpen(playerInventory.player);//calls onOpen() from our inventory to readNbt
     }
 
-    //creates slots for the backpack
+    //Create slots for the backpack
     public void buildContainer(PlayerInventory playerInventory) {
         //container
         for(int i = 0; i < 6; i++) {
