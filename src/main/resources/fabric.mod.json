@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "singlebackpack",
+  "version": "${version}",
+
+  "name": "singlebackpack",
+  "description": "singlebackpack",
+  "authors": [
+    "Skyfy16"
+  ],
+  "contact": {},
+
+  "license": "MIT",
+  "icon": "assets/singlebackpack/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "ch.skyfy.singlebackpack.SingleBackpack"
+    ]
+  },
+  "mixins": [
+    "singlebackpack.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.12.12",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
