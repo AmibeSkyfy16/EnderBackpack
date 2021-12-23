@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "ch.skyfy.singlebackpack.SingleBackpack"
+    ],
+    "client": [
+      "ch.skyfy.singlebackpack.client.ClientSetup"
     ]
   },
   "mixins": [
