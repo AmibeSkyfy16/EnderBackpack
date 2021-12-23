@@ -12,3 +12,7 @@ Players need more space in their inventory.
 Most of the backpack mods can be crafted easily and have their own content, so there is no interest in shulkerboxes anymore.
 
 this mod is the perfect compromise
+
+## Special Thanks
+
+  DanikingRD
