@@ -9,20 +9,19 @@ import net.minecraft.server.command.ServerCommandSource;
 
 public class CmdBackpack {
 
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(CommandManager.literal("inventory")
-                .then(
-                        CommandManager.argument("open", StringArgumentType.string())
-                                .suggests((context, builder) -> {
-                                    builder.suggest("open");
-                                    return builder.buildFuture();
-                                }).executes(context -> {
-                                    BackpackManager.openInventory(context.getSource().getPlayer());
-                                    return Command.SINGLE_SUCCESS;
-                                })
-                )
-        );
+//    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
+//        dispatcher.register(CommandManager.literal("inventory")
+//                .then(
+//                        CommandManager.argument("open", StringArgumentType.string())
+//                                .suggests((context, builder) -> {
+//                                    builder.suggest("open");
+//                                    return builder.buildFuture();
+//                                }).executes(context -> {
+//                                    BackpackManager.openInventory(context.getSource().getPlayer());
+//                                    return Command.SINGLE_SUCCESS;
+//                                })
+//                )
+//        );
 
-    }
 
 }
