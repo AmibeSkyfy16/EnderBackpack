@@ -4,7 +4,15 @@
 This mod add a backpack, but only one backpack
 Even if you duplicate the item, the content of the duplicated item will be identical to the first one.
 
-## There are two to use this mod
+As the player spends more time on the server, the backpack will grow.
+The default configuration is as follows:
+  2 hours / 2*9 slots   when the player has played 2 hours on the server
+  3 hours / 3*9 slots   when the player has played 3 hours on the server
+  24 hours / 5*9 slots  ...
+  72 hours / 6*9 slots  ...
+  
+
+## There are two way to use this mod
 Either the players receive a backpack, at their first connection, or they will have to craft it (default)
 you can configure this in the file config.json under backpack folder
 
