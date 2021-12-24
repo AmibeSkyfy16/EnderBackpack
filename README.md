@@ -1,7 +1,7 @@
 # SingleBackpack
 
 ## Basic
-This mod add a backpack, but only one backpack (uncraftable)
+This mod add a backpack, but only one backpack
 Even if you duplicate the item, the content of the duplicated item will be identical to the first one.
 
 ## There are two to use this mod
