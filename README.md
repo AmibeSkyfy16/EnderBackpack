@@ -21,7 +21,7 @@ The default configuration is as follows:
 
 ## There are two way to use this mod
 Either the players receive a backpack, at their first connection, or they will have to craft it (default)
-you can configure this in the file config.json under backpack folder
+you can configure this in the file config.json under SingleBackpack folder
 
 
 ## Why this mod?
