@@ -8,8 +8,11 @@ As the player spends more time on the server, the backpack will grow.
 The default configuration is as follows:
 
   2 hours / 2*9 slots   when the player has played 2 hours on the server
+  
   3 hours / 3*9 slots   when the player has played 3 hours on the server
+  
   24 hours / 5*9 slots  ...
+  
   72 hours / 6*9 slots  ...
   
   
