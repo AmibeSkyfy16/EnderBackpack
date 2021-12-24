@@ -16,6 +16,11 @@ repositories {
 		name 'velocity'
 		url 'https://nexus.velocitypowered.com/repository/maven-public/'
 	}
+	maven {
+		name = 'Ladysnake Mods'
+		url = 'https://ladysnake.jfrog.io/artifactory/mods'
+	}
+
 	mavenCentral()
 
 //	maven {
@@ -28,9 +33,6 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-//	include modApi("me.bymartrixx.player-events:api:2.2.1")
-//	include modImplementation("me.bymartrixx.player-events:api:2.2.1")
 
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 

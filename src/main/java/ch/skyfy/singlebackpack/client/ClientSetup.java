@@ -1,5 +1,6 @@
 package ch.skyfy.singlebackpack.client;
 
+import ch.skyfy.singlebackpack.BackpacksManager;
 import ch.skyfy.singlebackpack.SingleBackpack;
 import ch.skyfy.singlebackpack.client.screen.BackpackScreen;
 import net.fabricmc.api.ClientModInitializer;

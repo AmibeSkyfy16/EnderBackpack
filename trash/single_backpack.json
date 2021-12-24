@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LPL",
+    "SCS",
+    "WWW"
+  ],
+  "key": {
+    "L": {
+      "tag": "minecraft:leather"
+    },
+    "S": {
+      "tag": "minecraft:string"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "W": {
+      "item": "minecraft:wool"
+    },
+    "P": {
+      "item": "minecraft:lead"
+    }
+  },
+  "result": {
+    "item": "single_backpack:backpack",
+    "count": 1
+  }
+}
