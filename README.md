@@ -1,13 +1,12 @@
 # SingleBackpack
 
 ## Basic
-
 This mod add a backpack, but only one backpack (uncraftable)
 Even if you duplicate the item, the content of the duplicated item will be identical to the first one.
 
-The mod add a gamerule called GIVE_PLAYER_BACKPACK, true by default
-
-When a player logs in, they will receive the backpack
+## There are two to use this mod
+Either the players receive a backpack, at their first connection, or they will have to craft it (default)
+you can configure this in the file config.json under backpack folder
 
 
 ## Why this mod?
