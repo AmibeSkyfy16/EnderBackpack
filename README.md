@@ -12,6 +12,7 @@ As the player spends more time on the server, the backpack will grow. The defaul
 |   72   | 6*9 = 54         |
 
 You can create your own ***sizes*** by settings a time in millis as key and number of rows as value
+
 max rows is 6
 
 ## There are two way to use this mod
