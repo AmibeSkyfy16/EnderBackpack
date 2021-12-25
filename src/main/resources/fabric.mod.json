@@ -11,7 +11,7 @@
   "contact": {},
 
   "license": "MIT",
-  "icon": "assets/singlebackpack/icon.png",
+  "icon": "assets/single_backpack/icon.png",
 
   "environment": "*",
   "entrypoints": {

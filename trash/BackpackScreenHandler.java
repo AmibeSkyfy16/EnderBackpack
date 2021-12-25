@@ -19,7 +19,7 @@ public class BackpackScreenHandler extends ScreenHandler {
     private final Inventory inventory;//your actual inventory
 
     public BackpackScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(BackpacksManager.CURRENT_ROWS.get() * 9));//9 * 6 slots
+        this(syncId, playerInventory, new SimpleInventory(BackpacksManager.current.rows * BackpacksManager.current.columns));//9 * 6 slots
     }
 
     public BackpackScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
@@ -27,32 +27,27 @@ public class BackpackScreenHandler extends ScreenHandler {
         this.inventory = inventory;
         this.buildContainer(playerInventory);
         this.inventory.onOpen(playerInventory.player);//calls onOpen() from our inventory to readNbt
-        System.out.println("OPEN");
     }
 
     //Create slots for the backpack
     public void buildContainer(PlayerInventory playerInventory) {
-
-        int i = (BackpacksManager.CURRENT_ROWS.get() - 4) * 18;
-
+        //container
+        for (int i = 0; i < BackpacksManager.current.rows; i++) {
+            for (int j = 0; j < BackpacksManager.current.columns; j++) {
+                this.addSlot(new BackpackSlot(this.inventory, j + i * BackpacksManager.current.columns, 8 + j * 18, 18 + i * 18));
+            }
+        }
+        //player inventory
         int j;
         int k;
-        //container
-        for (j = 0; j < BackpacksManager.CURRENT_ROWS.get(); ++j) {
+        for (j = 0; j < 3; ++j) {
             for (k = 0; k < 9; ++k) {
-                this.addSlot(new BackpackSlot(inventory, k + j * 9, 8 + k * 18, 18 + j * 18));
+                this.addSlot(new Slot(playerInventory, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 + 36));
             }
         }
 
-        //player inventory
-        for(j = 0; j < 3; ++j) {
-            for(k = 0; k < 9; ++k) {
-                this.addSlot(new Slot(playerInventory, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 + i));
-            }
-        }
-
-        for(j = 0; j < 9; ++j) {
-            this.addSlot(new Slot(playerInventory, j, 8 + j * 18, 161 + i));
+        for (j = 0; j < 9; ++j) {
+            this.addSlot(new Slot(playerInventory, j, 8 + j * 18, 161 + 36));
         }
     }
 

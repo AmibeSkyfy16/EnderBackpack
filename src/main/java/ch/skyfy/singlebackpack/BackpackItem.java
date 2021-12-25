@@ -13,8 +13,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-
-//Base backpack item
 public class BackpackItem extends Item {
 
     public BackpackItem(Settings settings) {
@@ -37,7 +35,7 @@ public class BackpackItem extends Item {
 
                     @Override
                     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-                        return new BackpackScreenHandler(syncId, inv, new BackpackInventory(54, user.getStackInHand(hand), user.getUuidAsString()));
+                        return new BackpackScreenHandler(syncId, inv, new BackpackInventory(BackpacksManager.CURRENT_ROWS.get() * 9, user.getStackInHand(hand), user.getUuidAsString()));
                     }
                 });
             }

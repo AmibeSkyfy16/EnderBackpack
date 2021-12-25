@@ -64,7 +64,7 @@ public class PlayTimeMeter {
                     now = System.currentTimeMillis();
                     fireTimeChangedEvent();
                 }
-            }, 1000, 1000);
+            }, 2000, 2000);
         });
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             timeSaver.cancel();

@@ -3,7 +3,10 @@ package ch.skyfy.singlebackpack;
 import ch.skyfy.singlebackpack.client.screen.BackpackScreenHandler;
 import ch.skyfy.singlebackpack.config.Config;
 import com.google.common.collect.Lists;
-import com.google.gson.*;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
@@ -25,7 +28,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class SingleBackpack implements ModInitializer {
 
@@ -94,15 +97,21 @@ public class SingleBackpack implements ModInitializer {
         Config config = null;
         try {
             if (!configFile.exists()) {
-                var sizes = new HashMap<Long, Size>() {{ // TODO Fix this broken GUI
-//                    put(0L, new Size((byte) 1, (byte) 9,  "textures/gui/container_1x9.png"));
-//                    put(7_200_000L, new Size((byte) 2, (byte) 9, "textures/gui/container_2x9.png"));
-//                    put(10_800_000L, new Size((byte) 3, (byte) 9, "textures/gui/container_3x9.png"));
-//                    put(14_400_000L, new Size((byte) 4, (byte) 9, "textures/gui/container_4x9.png"));
-//                    put(86_400_000L, new Size((byte) 5, (byte) 9, "textures/gui/container_5x9.png"));
-//                    put(259_200_000L, new Size((byte) 6, (byte) 9, "textures/gui/container_6x9.png"));
-                    put(0L, new Size((byte) 5, (byte) 9, "textures/gui/container_54.png"));
-                }};
+                var sizes = new LinkedHashMap<Long, Byte>();
+                sizes.put(0L, (byte) 1);
+                sizes.put(10_000L, (byte) 2);
+                sizes.put(20_000L, (byte) 3);
+                sizes.put(30_000L, (byte) 4);
+                sizes.put(40_000L, (byte) 5);
+                sizes.put(50_000L, (byte) 6);
+
+//                sizes.put(0L, (byte)1);
+//                sizes.put(7_200_000L, (byte)2);
+//                sizes.put(10_800_000L, (byte)3);
+//                sizes.put(14_400_000L, (byte)4);
+//                sizes.put(86_400_000L, (byte)5);
+//                sizes.put(259_200_000L, (byte)6);
+
                 config = new Config(false, false, sizes);
                 var writer = new FileWriter(configFile);
                 gson.toJson(config, writer);

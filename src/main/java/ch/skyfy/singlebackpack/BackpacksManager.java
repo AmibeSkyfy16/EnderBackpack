@@ -1,24 +1,35 @@
 package ch.skyfy.singlebackpack;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
 public class BackpacksManager {
 
-    public static Size current = SingleBackpack.config.sizes.get(0L);
+    public static final AtomicReference<Byte> CURRENT_ROWS = new AtomicReference<>(SingleBackpack.config.sizes.get(0L));
 
-    public static void initialize(){
-        // Determines when the player's doc bag expands
+    public static void initialize() {
+        // Determines when the player's backpack expands
         PlayTimeMeter.getInstance().registerTimeChangedEvent(time -> {
-            Size size = null;
-            var it = SingleBackpack.config.sizes.entrySet().iterator();
-            while (it.hasNext()){
-                var entry = it.next();
-                if(time >= entry.getKey()){
-                    if(it.hasNext()){
-                        var next = it.next();
-                        if(time < next.getKey()) size = next.getValue();
-                    }else size = entry.getValue();
+            var timeIsGreaterThan = new AtomicBoolean(true);
+            var lastRow = new AtomicReference<>((byte) -1);
+            var count = new AtomicInteger(0);
+            SingleBackpack.config.sizes.forEach((keyTime, row) -> {
+                if (!timeIsGreaterThan.get()) return;
+
+                if(timeIsGreaterThan.get() && count.get() == SingleBackpack.config.sizes.size() - 1)
+                    CURRENT_ROWS.set(row);
+
+                if (time >= keyTime)
+                    timeIsGreaterThan.set(true);
+                 else {
+                    if (timeIsGreaterThan.get())
+                        CURRENT_ROWS.set(lastRow.get());
+                    timeIsGreaterThan.set(false);
                 }
-            }
-            if(size != null && !size.equals(current)) current = size;
+                lastRow.set(row);
+                count.getAndIncrement();
+            });
         });
     }
 }
