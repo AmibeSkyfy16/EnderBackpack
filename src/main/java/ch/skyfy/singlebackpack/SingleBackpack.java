@@ -98,19 +98,19 @@ public class SingleBackpack implements ModInitializer {
         try {
             if (!configFile.exists()) {
                 var sizes = new LinkedHashMap<Long, Byte>();
-                sizes.put(0L, (byte) 1);
-                sizes.put(10_000L, (byte) 2);
-                sizes.put(20_000L, (byte) 3);
-                sizes.put(30_000L, (byte) 4);
-                sizes.put(40_000L, (byte) 5);
-                sizes.put(50_000L, (byte) 6);
+//                sizes.put(0L, (byte) 1);
+//                sizes.put(10_000L, (byte) 2);
+//                sizes.put(20_000L, (byte) 3);
+//                sizes.put(30_000L, (byte) 4);
+//                sizes.put(40_000L, (byte) 5);
+//                sizes.put(50_000L, (byte) 6);
 
-//                sizes.put(0L, (byte)1);
-//                sizes.put(7_200_000L, (byte)2);
-//                sizes.put(10_800_000L, (byte)3);
-//                sizes.put(14_400_000L, (byte)4);
-//                sizes.put(86_400_000L, (byte)5);
-//                sizes.put(259_200_000L, (byte)6);
+                sizes.put(0L, (byte)1);
+                sizes.put(10800000L, (byte)2); // 3 hours
+                sizes.put(21600000L, (byte)3); // 6 hours
+                sizes.put(86400000L, (byte)4); // 24 hours
+                sizes.put(172800000L, (byte)5); // 48 hours
+                sizes.put(259200000L, (byte)6); // 72 hours
 
                 config = new Config(false, false, sizes);
                 var writer = new FileWriter(configFile);

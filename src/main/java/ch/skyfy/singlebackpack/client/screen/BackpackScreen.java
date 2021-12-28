@@ -12,7 +12,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-//renders your screen
 @Environment(EnvType.CLIENT)
 public class BackpackScreen extends HandledScreen<BackpackScreenHandler> {
 
