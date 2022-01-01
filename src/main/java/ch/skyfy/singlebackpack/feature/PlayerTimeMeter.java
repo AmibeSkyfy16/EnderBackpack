@@ -7,7 +7,6 @@ import com.google.gson.GsonBuilder;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 import java.io.File;
@@ -160,7 +159,8 @@ public class PlayerTimeMeter {
             startTime = System.currentTimeMillis();
             return time;
         }
-        public void saveTimeToDisk(){
+
+        public void saveTimeToDisk() {
             try {
                 save(file, saveTime());
             } catch (IOException e) {

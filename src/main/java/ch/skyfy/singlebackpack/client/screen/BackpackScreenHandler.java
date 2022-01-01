@@ -22,7 +22,6 @@ public class BackpackScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;//your actual inventory
 
-//    private String uuid;
 
     public BackpackScreenHandler(int syncId, PlayerInventory playerInventory) {
         this(syncId, playerInventory, new SimpleInventory(BackpacksManager.playerRows.get(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT ? ClientSetup.playerClientUUID : playerInventory.player.getUuidAsString()) * 9));//9 * 6 slots
@@ -30,12 +29,6 @@ public class BackpackScreenHandler extends ScreenHandler {
 
     public BackpackScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(SingleBackpack.BACKPACK_SCREEN_HANDLER, syncId);
-
-        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT){
-            System.out.println("CLIENT getEnvironmentType ");
-            System.out.println("playerInventory " + playerInventory.player.getUuidAsString());
-        }
-
         this.inventory = inventory;
         this.buildContainer(playerInventory);
         this.inventory.onOpen(playerInventory.player);//calls onOpen() from our inventory to readNbt
@@ -43,7 +36,6 @@ public class BackpackScreenHandler extends ScreenHandler {
 
     //Create slots for the backpack
     public void buildContainer(PlayerInventory playerInventory) {
-
         String uuid = "";
         if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT){
             System.out.println("CLIENT CLIENT CLIENT");
