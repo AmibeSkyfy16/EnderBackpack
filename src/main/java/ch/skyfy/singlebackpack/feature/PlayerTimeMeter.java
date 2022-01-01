@@ -4,7 +4,11 @@ package ch.skyfy.singlebackpack.feature;
 import ch.skyfy.singlebackpack.SingleBackpack;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Identifier;
 
 import java.io.File;
 import java.io.FileReader;
@@ -62,15 +66,15 @@ public class PlayerTimeMeter {
             if (playerTimes.stream().noneMatch(playerTime -> playerTime.uuid.equals(handler.player.getUuidAsString()))) {
                 playerTimes.add(new PlayerTime(handler.player.getUuidAsString(), System.currentTimeMillis()));
                 fireTimeChangedEvent(handler.player.getUuidAsString());
+                var nbt = new NbtCompound();
+                nbt.putLong(handler.player.getUuidAsString(), getTime(handler.player.getUuidAsString()));
+                sender.sendPacket(new Identifier("test"), PacketByteBufs.create().writeNbt(nbt));
             }
         });
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
-            System.out.println("total time for player " + handler.player.getEntityName());
             playerTimes.forEach(playerTime -> {
-                if (playerTime.uuid.equals(handler.player.getUuidAsString())) {
-                    System.out.println("total time is: " + playerTime.time);
+                if (playerTime.uuid.equals(handler.player.getUuidAsString()))
                     playerTime.saveTimeToDisk();
-                }
             });
             playerTimes.removeIf(playerTime -> playerTime.uuid.equals(handler.player.getUuidAsString()));
         });
@@ -92,7 +96,7 @@ public class PlayerTimeMeter {
                 }
                 count++;
             }
-        }, 1000, 1000);
+        }, 5000, 5000);
     }
 
     public void registerTimeChangedEvent(TimeChangedEvent event) {
