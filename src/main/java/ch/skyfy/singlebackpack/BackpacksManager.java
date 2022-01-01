@@ -16,7 +16,7 @@ public class BackpacksManager {
 
     public static final Map<String, Byte> playerRows = new HashMap<>();
 
-    private static void getCorrectInventorySize(String uuid, Long time) {
+    public static void getCorrectInventorySize(String uuid, Long time) {
         var timeIsGreaterThan = new AtomicBoolean(true);
         var lastRow = new AtomicReference<>((byte) -1);
         var count = new AtomicInteger(0);
@@ -45,7 +45,9 @@ public class BackpacksManager {
                 var nbt = buf.readNbt();
                 var uuid = nbt.getKeys().toArray(String[]::new)[0];
                 var time = nbt.getLong(uuid);
+                System.out.println("Row received from server : " + playerRows.get(uuid));
                 client.execute(() -> getCorrectInventorySize(uuid, time));
+                System.out.println("2. Row received from server : " + playerRows.get(uuid));
             });
         }
         // Determines when the player's backpack expands

@@ -113,11 +113,11 @@ public class SingleBackpack implements ModInitializer {
             if (!configFile.exists()) {
                 var sizes = new LinkedHashMap<Long, Byte>();
                 sizes.put(0L, (byte) 1);
-                sizes.put(10_000L, (byte) 2);
-                sizes.put(20_000L, (byte) 3);
-                sizes.put(30_000L, (byte) 4);
-                sizes.put(40_000L, (byte) 5);
-                sizes.put(50_000L, (byte) 6);
+                sizes.put(30_000L, (byte) 2);
+                sizes.put(60_000L, (byte) 3);
+                sizes.put(90_000L, (byte) 4);
+                sizes.put(120_000L, (byte) 5);
+                sizes.put(5000_000L, (byte) 6);
 
 //                sizes.put(0L, (byte)1);
 //                sizes.put(10800000L, (byte)2); // 3 hours

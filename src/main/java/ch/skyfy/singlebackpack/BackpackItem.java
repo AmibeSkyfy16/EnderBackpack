@@ -26,6 +26,9 @@ public class BackpackItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient) {
             if (!user.isSneaking()) {
+
+
+
                 user.openHandledScreen(new NamedScreenHandlerFactory() {
                     @Override
                     public Text getDisplayName() {

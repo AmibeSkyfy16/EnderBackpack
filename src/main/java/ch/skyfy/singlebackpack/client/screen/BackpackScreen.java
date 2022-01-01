@@ -23,6 +23,8 @@ public class BackpackScreen extends HandledScreen<BackpackScreenHandler> {
 
         row = BackpacksManager.playerRows.get(ClientSetup.playerClientUUID);
 
+        System.out.println("BackpackScreen : " + row);
+
         this.backgroundHeight = 114 + row * 18;
         this.playerInventoryTitleY = this.backgroundHeight - 94;
     }

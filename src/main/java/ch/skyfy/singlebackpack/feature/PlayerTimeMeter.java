@@ -6,7 +6,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 import java.io.File;
@@ -63,7 +66,7 @@ public class PlayerTimeMeter {
     private void registerEvent() {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             if (playerTimes.stream().noneMatch(playerTime -> playerTime.uuid.equals(handler.player.getUuidAsString()))) {
-                playerTimes.add(new PlayerTime(handler.player.getUuidAsString(), System.currentTimeMillis()));
+                playerTimes.add(new PlayerTime(handler.player, handler.player.getUuidAsString(), System.currentTimeMillis()));
                 fireTimeChangedEvent(handler.player.getUuidAsString());
                 var nbt = new NbtCompound();
                 nbt.putLong(handler.player.getUuidAsString(), getTime(handler.player.getUuidAsString()));
@@ -82,11 +85,14 @@ public class PlayerTimeMeter {
     private void startSaverTimer() {
         new Timer(true).schedule(new TimerTask() {
             private int count = 0;
-
             @Override
             public void run() {
                 for (var playerTime : playerTimes) {
                     playerTime.saveTime();
+                    var nbt = new NbtCompound();
+                    nbt.putLong(playerTime.uuid, getTime(playerTime.uuid));
+                    ServerPlayNetworking.send(playerTime.player, new Identifier("test"), PacketByteBufs.create().writeNbt(nbt));
+//                    sender.sendPacket(new Identifier("test"), PacketByteBufs.create().writeNbt(nbt));
                     fireTimeChangedEvent(playerTime.uuid);
                 }
                 if (count >= 360) {
@@ -95,7 +101,7 @@ public class PlayerTimeMeter {
                 }
                 count++;
             }
-        }, 5000, 5000);
+        }, 1000, 1000);
     }
 
     public void registerTimeChangedEvent(TimeChangedEvent event) {
@@ -122,18 +128,20 @@ public class PlayerTimeMeter {
         }
     }
 
-    private static void get(File file) throws IOException {
+    private static Long get(File file) throws IOException {
         try (var reader = new FileReader(file)) {
-            gson.fromJson(reader, (Type) Long.TYPE);
+            return gson.fromJson(reader, (Type) Long.TYPE);
         }
     }
 
     static class PlayerTime {
+        final ServerPlayerEntity player;
         final String uuid;
         private Long startTime, time;
         private final File file;
 
-        public PlayerTime(String uuid, Long startTime) {
+        public PlayerTime(ServerPlayerEntity player, String uuid, Long startTime) {
+            this.player = player;
             this.uuid = uuid;
             this.startTime = startTime;
             file = getInstance().playerTimesFolder.toPath().resolve(uuid + ".json").toFile();
@@ -143,7 +151,7 @@ public class PlayerTimeMeter {
         private Long getTime() {
             if (file.exists()) {
                 try {
-                    get(file);
+                    return get(file);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
