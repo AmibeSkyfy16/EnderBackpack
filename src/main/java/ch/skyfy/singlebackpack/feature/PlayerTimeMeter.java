@@ -154,8 +154,6 @@ public class PlayerTimeMeter {
         public Long saveTime() {
             var elapsed = System.currentTimeMillis() - startTime;
             time += elapsed;
-            System.out.println("Temps écoulé: " + elapsed);
-            System.out.println("Temps total: " + time);
             startTime = System.currentTimeMillis();
             return time;
         }
