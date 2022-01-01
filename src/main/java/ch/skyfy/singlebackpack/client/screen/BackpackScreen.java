@@ -16,11 +16,14 @@ import net.minecraft.util.Identifier;
 @Environment(EnvType.CLIENT)
 public class BackpackScreen extends HandledScreen<BackpackScreenHandler> {
 
-//    private final String uuid;
+    private final Byte row;
 
     public BackpackScreen(BackpackScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        this.backgroundHeight = 114 + BackpacksManager.playerRows.get(ClientSetup.playerClientUUID) * 18;
+
+        row = BackpacksManager.playerRows.get(ClientSetup.playerClientUUID);
+
+        this.backgroundHeight = 114 + row * 18;
         this.playerInventoryTitleY = this.backgroundHeight - 94;
     }
 
@@ -31,8 +34,8 @@ public class BackpackScreen extends HandledScreen<BackpackScreenHandler> {
         RenderSystem.setShaderTexture(0, new Identifier(SingleBackpack.MODID, "textures/gui/container_54.png"));
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - this.backgroundHeight) / 2;
-        this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, BackpacksManager.playerRows.get(ClientSetup.playerClientUUID) * 18 + 17);
-        this.drawTexture(matrices, i, j + BackpacksManager.playerRows.get(ClientSetup.playerClientUUID) * 18 + 17, 0, 126, this.backgroundWidth, 96);
+        this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, row * 18 + 17);
+        this.drawTexture(matrices, i, j + row * 18 + 17, 0, 126, this.backgroundWidth, 96);
     }
 
     @Override

@@ -22,6 +22,7 @@ public class BackpackScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;//your actual inventory
 
+    private final Byte row;
 
     public BackpackScreenHandler(int syncId, PlayerInventory playerInventory) {
         this(syncId, playerInventory, new SimpleInventory(BackpacksManager.playerRows.get(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT ? ClientSetup.playerClientUUID : playerInventory.player.getUuidAsString()) * 9));//9 * 6 slots
@@ -29,6 +30,11 @@ public class BackpackScreenHandler extends ScreenHandler {
 
     public BackpackScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(SingleBackpack.BACKPACK_SCREEN_HANDLER, syncId);
+
+        row = BackpacksManager.playerRows.get(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT ? ClientSetup.playerClientUUID : playerInventory.player.getUuidAsString());
+
+        System.out.println("ROW IS: " + row);
+
         this.inventory = inventory;
         this.buildContainer(playerInventory);
         this.inventory.onOpen(playerInventory.player);//calls onOpen() from our inventory to readNbt
@@ -36,28 +42,13 @@ public class BackpackScreenHandler extends ScreenHandler {
 
     //Create slots for the backpack
     public void buildContainer(PlayerInventory playerInventory) {
-        String uuid = "";
-        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT){
-            System.out.println("CLIENT CLIENT CLIENT");
-            BackpacksManager.playerRows.forEach((s, aByte) -> {
-                System.out.println("UUID + " + s + " value + " + aByte);
-            });
-            uuid = ClientSetup.playerClientUUID;
-        }else{
-            System.out.println("SERVER SERVR");
-            BackpacksManager.playerRows.forEach((s, aByte) -> {
-                System.out.println("UUID + " + s + " value + " + aByte);
-            });
-            uuid = playerInventory.player.getUuidAsString();
-        }
-        System.out.println("UUID " + uuid);
 
-        int i = (BackpacksManager.playerRows.get(uuid) - 4) * 18;
+        int i = (row - 4) * 18;
 
         int j;
         int k;
         //container
-        for (j = 0; j < BackpacksManager.playerRows.get(uuid); ++j) {
+        for (j = 0; j < row; ++j) {
             for (k = 0; k < 9; ++k) {
                 this.addSlot(new BackpackSlot(inventory, k + j * 9, 8 + k * 18, 18 + j * 18));
             }
