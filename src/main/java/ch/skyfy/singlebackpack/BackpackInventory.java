@@ -19,7 +19,7 @@ public class BackpackInventory implements Inventory {
 
     private final int size;
 
-    private final ItemStack container; // backpack where nbt-data will be written
+    private final ItemStack container;
 
     private final File playerFile;
 

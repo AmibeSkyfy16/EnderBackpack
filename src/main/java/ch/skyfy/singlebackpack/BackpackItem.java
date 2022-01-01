@@ -1,6 +1,8 @@
 package ch.skyfy.singlebackpack;
 
 import ch.skyfy.singlebackpack.client.screen.BackpackScreenHandler;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
@@ -12,6 +14,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.lwjgl.system.CallbackI;
 
 public class BackpackItem extends Item {
 
@@ -26,9 +29,16 @@ public class BackpackItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient) {
             if (!user.isSneaking()) {
-
-
-
+                if(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER){
+                    System.out.println(System.currentTimeMillis() + " PLAYER USE BACKPACK SERVER SIDE");
+                    var dataVerificator = BackpacksManager.verificator.get(user.getUuidAsString());
+                    if(!dataVerificator.clientRespond.get()){
+                        System.out.println("CODE IS RETURN WE ARE NOT SURE CLIENT AND SERVER HAS CORRECT ROW, BECAUSE CLIENT NOT REPLAY TO SERVER");
+                        return TypedActionResult.consume(user.getStackInHand(hand));
+                    }
+                }else{
+                    System.out.println(System.currentTimeMillis() + " PLAYER USE BACKPACK CLIENT SIDE");
+                }
                 user.openHandledScreen(new NamedScreenHandlerFactory() {
                     @Override
                     public Text getDisplayName() {

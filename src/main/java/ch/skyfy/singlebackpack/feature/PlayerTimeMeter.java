@@ -4,13 +4,8 @@ package ch.skyfy.singlebackpack.feature;
 import ch.skyfy.singlebackpack.SingleBackpack;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
 
 import java.io.File;
 import java.io.FileReader;
@@ -67,10 +62,7 @@ public class PlayerTimeMeter {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             if (playerTimes.stream().noneMatch(playerTime -> playerTime.uuid.equals(handler.player.getUuidAsString()))) {
                 playerTimes.add(new PlayerTime(handler.player, handler.player.getUuidAsString(), System.currentTimeMillis()));
-                fireTimeChangedEvent(handler.player.getUuidAsString());
-                var nbt = new NbtCompound();
-                nbt.putLong(handler.player.getUuidAsString(), getTime(handler.player.getUuidAsString()));
-                sender.sendPacket(new Identifier("test"), PacketByteBufs.create().writeNbt(nbt));
+                fireTimeChangedEvent(handler.player);
             }
         });
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
@@ -85,15 +77,12 @@ public class PlayerTimeMeter {
     private void startSaverTimer() {
         new Timer(true).schedule(new TimerTask() {
             private int count = 0;
+
             @Override
             public void run() {
                 for (var playerTime : playerTimes) {
                     playerTime.saveTime();
-                    var nbt = new NbtCompound();
-                    nbt.putLong(playerTime.uuid, getTime(playerTime.uuid));
-                    ServerPlayNetworking.send(playerTime.player, new Identifier("test"), PacketByteBufs.create().writeNbt(nbt));
-//                    sender.sendPacket(new Identifier("test"), PacketByteBufs.create().writeNbt(nbt));
-                    fireTimeChangedEvent(playerTime.uuid);
+                    fireTimeChangedEvent(playerTime.player);
                 }
                 if (count >= 360) {
                     playerTimes.forEach(PlayerTime::saveTimeToDisk);
@@ -108,8 +97,8 @@ public class PlayerTimeMeter {
         this.event = event;
     }
 
-    public void fireTimeChangedEvent(String uuid) {
-        if (event != null) event.timeChanged(uuid, getTime(uuid));
+    public void fireTimeChangedEvent(ServerPlayerEntity player) {
+        if (event != null) event.timeChanged(player, getTime(player.getUuidAsString()));
     }
 
     private void saveTimeForSpecificPlayer(String uuid) {
@@ -176,7 +165,7 @@ public class PlayerTimeMeter {
     }
 
     public interface TimeChangedEvent {
-        void timeChanged(String uuid, Long time);
+        void timeChanged(ServerPlayerEntity player, Long time);
     }
 
 }
