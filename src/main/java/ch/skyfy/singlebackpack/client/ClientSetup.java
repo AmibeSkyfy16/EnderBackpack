@@ -11,15 +11,17 @@ import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 @Environment(EnvType.CLIENT)
 public class ClientSetup implements ClientModInitializer {
 
-    public static String playerClientUUID;
+    public static String playerClientUUID = "";
 
     @Override
     public void onInitializeClient() {
+        // When the client will join the server, we will register his uuid for a future usage
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            System.out.println("CLIENT JOINED ");
-            if(client.player != null) {
+            if(client.player != null)
                 playerClientUUID = client.player.getUuidAsString();
-            }
+        });
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            playerClientUUID = "";
         });
         ScreenRegistry.register(SingleBackpack.BACKPACK_SCREEN_HANDLER, BackpackScreen::new);
     }

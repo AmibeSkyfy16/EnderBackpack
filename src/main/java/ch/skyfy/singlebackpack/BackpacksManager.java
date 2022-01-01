@@ -9,20 +9,24 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import org.apache.commons.io.FileUtils;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static ch.skyfy.singlebackpack.SingleBackpack.MOD_CONFIG_DIR;
+
 public class BackpacksManager {
 
     public static final Map<String, Byte> playerRows = new HashMap<>();
-
-//    public static final List<DataChecker> dataCheckers = new ArrayList<>();
 
     public static final Map<String, DataChecker> verificator = new HashMap<>();
 
@@ -44,9 +48,10 @@ public class BackpacksManager {
     /**
      * This code is called Server Side !!!
      * This code is code every time a player time is calculated
-     *      see PlayerTimeMeter.getInstance().registerTimeChangedEvent(BackpacksManager::getCorrectInventorySize);
+     * see PlayerTimeMeter.getInstance().registerTimeChangedEvent(BackpacksManager::getCorrectInventorySize);
+     *
      * @param player the player
-     * @param time the new total time for the player on this server
+     * @param time   the new total time for the player on this server
      */
     public static void getCorrectInventorySize(ServerPlayerEntity player, Long time) {
         var timeIsGreaterThan = new AtomicBoolean(true);
@@ -76,7 +81,6 @@ public class BackpacksManager {
     public static void sendDataToPlayer(ServerPlayerEntity serverPlayerEntity, Byte row) {
         var data = new DataChecker(row, new AtomicBoolean(false));
         verificator.put(serverPlayerEntity.getUuidAsString(), data);
-
         var nbt = new NbtCompound();
         nbt.putByte(serverPlayerEntity.getUuidAsString(), row);
         nbt.putLong("date", data.date);
@@ -101,20 +105,42 @@ public class BackpacksManager {
                     ClientPlayNetworking.send(new Identifier("rowreceived"), PacketByteBufs.create().writeNbt(replyNbt));
                 });
             });
-        }else {
+        } else {
+            // For prevents some lost data, we do a backup of all player inventory .dat file
+            new Timer(true).schedule(new TimerTask() {
+                private final File backpacksFolder = MOD_CONFIG_DIR.resolve("backpacks").toFile();
+                private final File backpacksBackupFolderFile = backpacksFolder.toPath().resolve("backup").toFile();
+                @Override
+                public void run() {
+                    var files = backpacksFolder.listFiles();
+                    if(files == null)return;
+                    for (var file : files) {
+                        var now = LocalDateTime.now();
+                        var dateFolderName = String.format("%d-%02d-%02d@%02d-%02d-%02d", now.getYear(), now.getMonthValue(), now.getDayOfMonth(), now.getHour(), now.getMinute(), now.getSecond());
+                        var dateFolderFile = backpacksBackupFolderFile.toPath().resolve(dateFolderName).toFile();
+                        if(!dateFolderFile.exists())
+                            if(!dateFolderFile.mkdir())return;
+
+                        try {
+                            FileUtils.copyFileToDirectory(file, dateFolderFile);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }, 60_000, 7_200_000L);
 
             ServerPlayNetworking.registerGlobalReceiver(new Identifier("rowreceived"), (server, player, handler, buf, responseSender) -> {
-                var nbt = (NbtCompound)buf.readNbt();
+                var nbt = (NbtCompound) buf.readNbt();
                 server.execute(() -> {
                     var row = nbt.getByte(player.getUuidAsString());
                     var date = nbt.getLong("date");
                     var data = verificator.get(player.getUuidAsString());
-                    if(data.date == date && data.row == row){
-                        if(!data.clientRespond.get())data.clientRespond.set(true);
+                    if (data.date == date && data.row == row) {
+                        if (!data.clientRespond.get()) data.clientRespond.set(true);
                     }
                 });
             });
-
             // This code is called server side
             // Determines when the player's backpack expands
             PlayerTimeMeter.getInstance().registerTimeChangedEvent(BackpacksManager::getCorrectInventorySize);

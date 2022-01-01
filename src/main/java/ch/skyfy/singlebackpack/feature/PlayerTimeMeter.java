@@ -19,7 +19,16 @@ import java.util.TimerTask;
 
 import static ch.skyfy.singlebackpack.SingleBackpack.DISABLED;
 
-
+/**
+ * The purpose of this class is to record the player's time.
+ *
+ * PlayerTimeMeter will use a Timer to calculate an elapsed time and keep total player time up to date
+ * The Timer is called every 2 secondes, but only every 6 minutes, a backup of player total time will be saved to a .json file
+ *
+ * PlayerTimeMeter has also an inner interface called TimeChangedEvent
+ * Class BackpackManager will register this interface for being notified when the player time changed
+ *
+ */
 public class PlayerTimeMeter {
 
     private static class PlayerTimeMeterHolder {
@@ -38,11 +47,11 @@ public class PlayerTimeMeter {
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    private TimeChangedEvent event;
-
     private final List<PlayerTime> playerTimes;
 
     private final File playerTimesFolder;
+
+    private TimeChangedEvent event;
 
     public PlayerTimeMeter() {
         playerTimesFolder = createConfigDir();
@@ -77,7 +86,6 @@ public class PlayerTimeMeter {
     private void startSaverTimer() {
         new Timer(true).schedule(new TimerTask() {
             private int count = 0;
-
             @Override
             public void run() {
                 for (var playerTime : playerTimes) {
@@ -90,7 +98,7 @@ public class PlayerTimeMeter {
                 }
                 count++;
             }
-        }, 1000, 1000);
+        }, 2000, 2000);
     }
 
     public void registerTimeChangedEvent(TimeChangedEvent event) {
@@ -111,9 +119,9 @@ public class PlayerTimeMeter {
         return playerTimes.stream().filter(playerTime -> playerTime.uuid.equals(uuid)).findFirst().get().time;
     }
 
-    private static void save(File file, Long r) throws IOException {
+    private static void save(File file, Long time) throws IOException {
         try (var writer = new FileWriter(file)) {
-            gson.toJson(r, Long.TYPE, writer);
+            gson.toJson(time, Long.TYPE, writer);
         }
     }
 
@@ -123,9 +131,9 @@ public class PlayerTimeMeter {
         }
     }
 
-    static class PlayerTime {
-        final ServerPlayerEntity player;
-        final String uuid;
+    private static class PlayerTime {
+        private final ServerPlayerEntity player;
+        private final String uuid;
         private Long startTime, time;
         private final File file;
 

@@ -11,7 +11,6 @@ import com.google.gson.JsonObject;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
@@ -32,21 +31,17 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SingleBackpack implements ModInitializer {
 
     public static AtomicBoolean DISABLED = new AtomicBoolean(false);
 
-
     public static final String MODID = "single_backpack";
 
     public static Path MOD_CONFIG_DIR = FabricLoader.getInstance().getConfigDir().resolve("SingleBackpack");
 
     public static Config config;
-
-    public static List<String> playersConnected = new ArrayList<>();
 
     public static final Item BACKPACK = new BackpackItem(new Item.Settings().group(ItemGroup.MISC).maxCount(1));//creates your backpack
 
@@ -100,11 +95,15 @@ public class SingleBackpack implements ModInitializer {
     private @Nullable Config createConfig() {
         var configDir = MOD_CONFIG_DIR.toFile();
         var backpacksFolderFile = MOD_CONFIG_DIR.resolve("backpacks").toFile();
+        var backpacksBackupFolderFile =backpacksFolderFile.toPath().resolve("backup").toFile();
         if (!configDir.exists())
             if (!configDir.mkdir()) return null;
 
         if (!backpacksFolderFile.exists())
             if (!backpacksFolderFile.mkdir()) return null;
+
+        if (!backpacksBackupFolderFile.exists())
+            if (!backpacksBackupFolderFile.mkdir()) return null;
 
         var gson = new GsonBuilder().setPrettyPrinting().create();
         var configFile = MOD_CONFIG_DIR.resolve("config.json").toFile();
@@ -112,19 +111,19 @@ public class SingleBackpack implements ModInitializer {
         try {
             if (!configFile.exists()) {
                 var sizes = new LinkedHashMap<Long, Byte>();
-                sizes.put(0L, (byte) 1);
-                sizes.put(30_000L, (byte) 2);
-                sizes.put(60_000L, (byte) 3);
-                sizes.put(90_000L, (byte) 4);
-                sizes.put(120_000L, (byte) 5);
-                sizes.put(5000_000L, (byte) 6);
+//                sizes.put(0L, (byte) 1);
+//                sizes.put(30_000L, (byte) 2);
+//                sizes.put(60_000L, (byte) 3);
+//                sizes.put(90_000L, (byte) 4);
+//                sizes.put(120_000L, (byte) 5);
+//                sizes.put(5000_000L, (byte) 6);
 
-//                sizes.put(0L, (byte)1);
-//                sizes.put(10800000L, (byte)2); // 3 hours
-//                sizes.put(21600000L, (byte)3); // 6 hours
-//                sizes.put(86400000L, (byte)4); // 24 hours
-//                sizes.put(172800000L, (byte)5); // 48 hours
-//                sizes.put(259200000L, (byte)6); // 72 hours
+                sizes.put(0L, (byte) 1);
+                sizes.put(3_600_000L, (byte) 2); // 1 hours
+                sizes.put(7_200_000L, (byte) 3); // 2 hours
+                sizes.put(14_400_000L, (byte) 4); // 4 hours
+                sizes.put(43_200_000L, (byte) 5); // 12 hours
+                sizes.put(129_600_000L, (byte) 6); // 36 hours
 
                 config = new Config(false, false, sizes);
                 var writer = new FileWriter(configFile);

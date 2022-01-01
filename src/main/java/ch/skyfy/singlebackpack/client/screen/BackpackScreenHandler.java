@@ -11,17 +11,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import org.apache.commons.compress.archivers.sevenz.CLI;
 
 
-//the screen handler takes care of syncing the player inventory
-//with the container
 public class BackpackScreenHandler extends ScreenHandler {
 
-    private final Inventory inventory;//your actual inventory
+    private final Inventory inventory;
 
     private final Byte row;
 
@@ -31,37 +27,26 @@ public class BackpackScreenHandler extends ScreenHandler {
 
     public BackpackScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(SingleBackpack.BACKPACK_SCREEN_HANDLER, syncId);
-
         row = BackpacksManager.playerRows.get(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT ? ClientSetup.playerClientUUID : playerInventory.player.getUuidAsString());
-
-        System.out.println("ROW IS: " + row);
-
         this.inventory = inventory;
         this.buildContainer(playerInventory);
-        this.inventory.onOpen(playerInventory.player);//calls onOpen() from our inventory to readNbt
+        this.inventory.onOpen(playerInventory.player);
     }
 
-    //Create slots for the backpack
     public void buildContainer(PlayerInventory playerInventory) {
-
         int i = (row - 4) * 18;
-
         int j;
         int k;
-        //container
         for (j = 0; j < row; ++j) {
             for (k = 0; k < 9; ++k) {
                 this.addSlot(new BackpackSlot(inventory, k + j * 9, 8 + k * 18, 18 + j * 18));
             }
         }
-
-        //player inventory
         for (j = 0; j < 3; ++j) {
             for (k = 0; k < 9; ++k) {
                 this.addSlot(new Slot(playerInventory, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 + i));
             }
         }
-
         for (j = 0; j < 9; ++j) {
             this.addSlot(new Slot(playerInventory, j, 8 + j * 18, 161 + i));
         }
@@ -69,18 +54,15 @@ public class BackpackScreenHandler extends ScreenHandler {
 
     @Override
     public boolean canUse(PlayerEntity player) {
-        return true;//if this is false the player cannot access the screen
+        return true;
     }
 
-    //calls the onClose() from our inventory to write nbt
     @Override
     public void close(PlayerEntity player) {
         super.close(player);
         this.inventory.onClose(player);
     }
 
-    //Called when you try to insert an item from x to y inventory
-    //this is a simple implementation to allow that
     @Override
     public ItemStack transferSlot(PlayerEntity player, int index) {
         ItemStack stack = ItemStack.EMPTY;
@@ -101,8 +83,6 @@ public class BackpackScreenHandler extends ScreenHandler {
                 slot.markDirty();
             }
         }
-
         return stack;
     }
-
 }
