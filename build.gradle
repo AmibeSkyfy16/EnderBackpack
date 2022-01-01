@@ -9,24 +9,7 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	flatDir {
-		dirs 'lib'
-	}
 
-	maven {
-		name 'velocity'
-		url 'https://nexus.velocitypowered.com/repository/maven-public/'
-	}
-	maven {
-		name = 'Ladysnake Mods'
-		url = 'https://ladysnake.jfrog.io/artifactory/mods'
-	}
-
-	mavenCentral()
-
-//	maven {
-//		url 'https://maven.bymartrixx.me'
-//	}
 }
 
 dependencies {
@@ -59,7 +42,6 @@ jar {
 
 processResources {
 	inputs.property "version", project.version
-
 	filesMatching("fabric.mod.json") {
 		expand "version": project.version
 	}
@@ -82,16 +64,4 @@ publishing {
 			}
 		}
 	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
-}
-
-publishMavenJavaPublicationToMavenLocal{
-
 }

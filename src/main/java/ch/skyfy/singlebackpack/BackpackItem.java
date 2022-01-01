@@ -19,7 +19,6 @@ public class BackpackItem extends Item {
         super(settings);
     }
 
-
     //called whenever you right-click your backpack
     //we are going to request a screen if the player is not sneaking
     //you can change the behaviour if you like
@@ -35,7 +34,7 @@ public class BackpackItem extends Item {
 
                     @Override
                     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-                        return new BackpackScreenHandler(syncId, inv, new BackpackInventory(BackpacksManager.CURRENT_ROWS.get() * 9, user.getStackInHand(hand), user.getUuidAsString()));
+                        return new BackpackScreenHandler(syncId, inv, new BackpackInventory(BackpacksManager.playerRows.get(player.getUuidAsString()) * 9, user.getStackInHand(hand), user.getUuidAsString()));
                     }
                 });
             }

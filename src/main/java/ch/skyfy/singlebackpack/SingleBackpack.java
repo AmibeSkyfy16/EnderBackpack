@@ -2,13 +2,16 @@ package ch.skyfy.singlebackpack;
 
 import ch.skyfy.singlebackpack.client.screen.BackpackScreenHandler;
 import ch.skyfy.singlebackpack.config.Config;
+import ch.skyfy.singlebackpack.feature.PlayerTimeMeter;
 import com.google.common.collect.Lists;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
@@ -29,14 +32,21 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SingleBackpack implements ModInitializer {
+
+    public static AtomicBoolean DISABLED = new AtomicBoolean(false);
+
 
     public static final String MODID = "single_backpack";
 
     public static Path MOD_CONFIG_DIR = FabricLoader.getInstance().getConfigDir().resolve("SingleBackpack");
 
     public static Config config;
+
+    public static List<String> playersConnected = new ArrayList<>();
 
     public static final Item BACKPACK = new BackpackItem(new Item.Settings().group(ItemGroup.MISC).maxCount(1));//creates your backpack
 
@@ -46,12 +56,16 @@ public class SingleBackpack implements ModInitializer {
         BACKPACK_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier(MODID, "backpack_screen"), BackpackScreenHandler::new); //registers your screen handler
     }
 
+
     @Override
     public void onInitialize() {
+        registerItem();
         config = createConfig();
         BackpacksManager.initialize();
-        registerEvents();
-        registerItem();
+        PlayerTimeMeter.initialize();
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+            registerEvents();
+        }
     }
 
     private void registerItem() {
@@ -98,19 +112,19 @@ public class SingleBackpack implements ModInitializer {
         try {
             if (!configFile.exists()) {
                 var sizes = new LinkedHashMap<Long, Byte>();
-//                sizes.put(0L, (byte) 1);
-//                sizes.put(10_000L, (byte) 2);
-//                sizes.put(20_000L, (byte) 3);
-//                sizes.put(30_000L, (byte) 4);
-//                sizes.put(40_000L, (byte) 5);
-//                sizes.put(50_000L, (byte) 6);
+                sizes.put(0L, (byte) 1);
+                sizes.put(10_000L, (byte) 2);
+                sizes.put(20_000L, (byte) 3);
+                sizes.put(30_000L, (byte) 4);
+                sizes.put(40_000L, (byte) 5);
+                sizes.put(50_000L, (byte) 6);
 
-                sizes.put(0L, (byte)1);
-                sizes.put(10800000L, (byte)2); // 3 hours
-                sizes.put(21600000L, (byte)3); // 6 hours
-                sizes.put(86400000L, (byte)4); // 24 hours
-                sizes.put(172800000L, (byte)5); // 48 hours
-                sizes.put(259200000L, (byte)6); // 72 hours
+//                sizes.put(0L, (byte)1);
+//                sizes.put(10800000L, (byte)2); // 3 hours
+//                sizes.put(21600000L, (byte)3); // 6 hours
+//                sizes.put(86400000L, (byte)4); // 24 hours
+//                sizes.put(172800000L, (byte)5); // 48 hours
+//                sizes.put(259200000L, (byte)6); // 72 hours
 
                 config = new Config(false, false, sizes);
                 var writer = new FileWriter(configFile);

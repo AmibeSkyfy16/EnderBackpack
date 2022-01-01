@@ -2,6 +2,7 @@ package ch.skyfy.singlebackpack.client.screen;
 
 import ch.skyfy.singlebackpack.BackpacksManager;
 import ch.skyfy.singlebackpack.SingleBackpack;
+import ch.skyfy.singlebackpack.client.ClientSetup;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,9 +16,11 @@ import net.minecraft.util.Identifier;
 @Environment(EnvType.CLIENT)
 public class BackpackScreen extends HandledScreen<BackpackScreenHandler> {
 
+//    private final String uuid;
+
     public BackpackScreen(BackpackScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        this.backgroundHeight = 114 + BackpacksManager.CURRENT_ROWS.get() * 18;
+        this.backgroundHeight = 114 + BackpacksManager.playerRows.get(ClientSetup.playerClientUUID) * 18;
         this.playerInventoryTitleY = this.backgroundHeight - 94;
     }
 
@@ -28,8 +31,8 @@ public class BackpackScreen extends HandledScreen<BackpackScreenHandler> {
         RenderSystem.setShaderTexture(0, new Identifier(SingleBackpack.MODID, "textures/gui/container_54.png"));
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - this.backgroundHeight) / 2;
-        this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, BackpacksManager.CURRENT_ROWS.get() * 18 + 17);
-        this.drawTexture(matrices, i, j + BackpacksManager.CURRENT_ROWS.get() * 18 + 17, 0, 126, this.backgroundWidth, 96);
+        this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, BackpacksManager.playerRows.get(ClientSetup.playerClientUUID) * 18 + 17);
+        this.drawTexture(matrices, i, j + BackpacksManager.playerRows.get(ClientSetup.playerClientUUID) * 18 + 17, 0, 126, this.backgroundWidth, 96);
     }
 
     @Override
