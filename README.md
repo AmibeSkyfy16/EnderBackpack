@@ -16,11 +16,8 @@ You can create your own ***sizes*** by settings a time in millis as key and numb
 max rows is 6
 
 ```diff
-- text in red
-+ text in green
-! text in orange
-# text in gray
-@@ text in purple (and bold)@@
+- @@Important@@
+- Values in the list must be sorted from smallest to largest. whether it is the size or the delay
 ```
 
 ## There are two way to use this mod
