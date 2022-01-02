@@ -1,7 +1,7 @@
 package ch.skyfy.singlebackpack.feature;
 
 
-import ch.skyfy.singlebackpack.SingleBackpack;
+import ch.skyfy.singlebackpack.Deactivator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -17,17 +17,17 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static ch.skyfy.singlebackpack.SingleBackpack.DISABLED;
+import static ch.skyfy.singlebackpack.Configurator.MOD_CONFIG_DIR;
+import static ch.skyfy.singlebackpack.ConstantsMessage.CONFIG_FOLDER_COULD_NOT_BE_CREATED;
 
 /**
  * The purpose of this class is to record the player's time.
- *
+ * <p>
  * PlayerTimeMeter will use a Timer to calculate an elapsed time and keep total player time up to date
  * The Timer is called every 2 secondes, but only every 6 minutes, a backup of player total time will be saved to a .json file
- *
+ * <p>
  * PlayerTimeMeter has also an inner interface called TimeChangedEvent
  * Class BackpackManager will register this interface for being notified when the player time changed
- *
  */
 public class PlayerTimeMeter {
 
@@ -61,9 +61,10 @@ public class PlayerTimeMeter {
     }
 
     private File createConfigDir() {
-        var playerTimesFolder = SingleBackpack.MOD_CONFIG_DIR.resolve("playerTimes").toFile();
+        var playerTimesFolder = MOD_CONFIG_DIR.resolve("playerTimes").toFile();
         if (!playerTimesFolder.exists())
-            if (!playerTimesFolder.mkdir()) DISABLED.set(true);
+            if (!playerTimesFolder.mkdir())
+                Deactivator.getInstance().disable(CONFIG_FOLDER_COULD_NOT_BE_CREATED.getMessage());
         return playerTimesFolder;
     }
 
@@ -86,6 +87,7 @@ public class PlayerTimeMeter {
     private void startSaverTimer() {
         new Timer(true).schedule(new TimerTask() {
             private int count = 0;
+
             @Override
             public void run() {
                 for (var playerTime : playerTimes) {

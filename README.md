@@ -5,11 +5,11 @@ As the player spends more time on the server, the backpack will grow. The defaul
 | hours  | slots available                       |
 | ------ |:----------------:| 
 |    0   | 1*9 = 9          |
-|    3   | 2*9 = 18         |
-|    6   | 3*9 = 27         |
-|   24   | 4*9 = 36         |
-|   48   | 5*9 = 45         |
-|   72   | 6*9 = 54         |
+|    1   | 2*9 = 18         |
+|    2   | 3*9 = 27         |
+|    4   | 4*9 = 36         |
+|   12   | 5*9 = 45         |
+|   36   | 6*9 = 54         |
 
 You can create your own ***sizes*** by settings a time in millis as key and number of rows as value
 

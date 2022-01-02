@@ -1,10 +1,8 @@
 package ch.skyfy.singlebackpack;
 
 import ch.skyfy.singlebackpack.client.screen.BackpackScreenHandler;
-import ch.skyfy.singlebackpack.config.Config;
 import ch.skyfy.singlebackpack.feature.PlayerTimeMeter;
 import com.google.common.collect.Lists;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -23,25 +21,16 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import org.jetbrains.annotations.Nullable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SingleBackpack implements ModInitializer {
 
-    public static AtomicBoolean DISABLED = new AtomicBoolean(false);
-
     public static final String MODID = "single_backpack";
 
-    public static Path MOD_CONFIG_DIR = FabricLoader.getInstance().getConfigDir().resolve("SingleBackpack");
-
-    public static Config config;
+    public static final Logger LOGGER = LogManager.getLogger("SingleBackpack");
 
     public static final Item BACKPACK = new BackpackItem(new Item.Settings().group(ItemGroup.MISC).maxCount(1));//creates your backpack
 
@@ -51,28 +40,28 @@ public class SingleBackpack implements ModInitializer {
         BACKPACK_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier(MODID, "backpack_screen"), BackpackScreenHandler::new); //registers your screen handler
     }
 
-
     @Override
     public void onInitialize() {
-        registerItem();
-        config = createConfig();
-        BackpacksManager.initialize();
-        PlayerTimeMeter.initialize();
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+            if (Configurator.initialize()) return;
+            PlayerTimeMeter.initialize();
             registerEvents();
         }
+        BackpacksManager.initialize();
+        registerItem();
     }
 
     private void registerItem() {
-        Registry.register(Registry.ITEM, new Identifier(MODID, "backpack"), BACKPACK);//registers your backpack
+        Registry.register(Registry.ITEM, new Identifier(MODID, "backpack"), BACKPACK);
     }
 
     private void registerEvents() {
         ServerEntityEvents.ENTITY_LOAD.register(this::givePlayerBackpack);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void givePlayerBackpack(Entity entity, ServerWorld world) {
-        if (!config.givePlayerBackpack) return;
+        if (!Configurator.getInstance().config.givePlayerBackpack) return;
         if (entity instanceof ServerPlayerEntity player) {
             var hasBackpack = false;
             for (var slot = 0; slot < player.getInventory().size(); slot++)
@@ -83,62 +72,6 @@ public class SingleBackpack implements ModInitializer {
                 player.sendMessage(Text.of("Your backpack has been dropped, be sure to get it back"), false);
             }
         }
-    }
-
-    /**
-     * Create configuration file and folder essential to the mod
-     * if something wrong happen, like a folder or a file cannot be created, the mod will be disabled
-     *
-     * @return Config or null
-     */
-    @SuppressWarnings("CommentedOutCode")
-    private @Nullable Config createConfig() {
-        var configDir = MOD_CONFIG_DIR.toFile();
-        var backpacksFolderFile = MOD_CONFIG_DIR.resolve("backpacks").toFile();
-        var backpacksBackupFolderFile =backpacksFolderFile.toPath().resolve("backup").toFile();
-        if (!configDir.exists())
-            if (!configDir.mkdir()) return null;
-
-        if (!backpacksFolderFile.exists())
-            if (!backpacksFolderFile.mkdir()) return null;
-
-        if (!backpacksBackupFolderFile.exists())
-            if (!backpacksBackupFolderFile.mkdir()) return null;
-
-        var gson = new GsonBuilder().setPrettyPrinting().create();
-        var configFile = MOD_CONFIG_DIR.resolve("config.json").toFile();
-        Config config = null;
-        try {
-            if (!configFile.exists()) {
-                var sizes = new LinkedHashMap<Long, Byte>();
-//                sizes.put(0L, (byte) 1);
-//                sizes.put(30_000L, (byte) 2);
-//                sizes.put(60_000L, (byte) 3);
-//                sizes.put(90_000L, (byte) 4);
-//                sizes.put(120_000L, (byte) 5);
-//                sizes.put(5000_000L, (byte) 6);
-
-                sizes.put(0L, (byte) 1);
-                sizes.put(3_600_000L, (byte) 2); // 1 hours
-                sizes.put(7_200_000L, (byte) 3); // 2 hours
-                sizes.put(14_400_000L, (byte) 4); // 4 hours
-                sizes.put(43_200_000L, (byte) 5); // 12 hours
-                sizes.put(129_600_000L, (byte) 6); // 36 hours
-
-                config = new Config(false, false, sizes);
-                var writer = new FileWriter(configFile);
-                gson.toJson(config, writer);
-                writer.flush();
-                writer.close();
-            } else {
-                var reader = new FileReader(configFile);
-                config = gson.fromJson(reader, Config.class);
-                reader.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return config;
     }
 
     public static JsonElement createBackpackRecipe() {

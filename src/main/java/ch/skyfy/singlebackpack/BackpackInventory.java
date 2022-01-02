@@ -11,7 +11,8 @@ import net.minecraft.util.collection.DefaultedList;
 import java.io.File;
 import java.io.IOException;
 
-import static ch.skyfy.singlebackpack.SingleBackpack.MOD_CONFIG_DIR;
+import static ch.skyfy.singlebackpack.Configurator.MOD_CONFIG_DIR;
+
 
 public class BackpackInventory implements Inventory {
 

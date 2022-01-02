@@ -22,7 +22,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static ch.skyfy.singlebackpack.SingleBackpack.MOD_CONFIG_DIR;
+import static ch.skyfy.singlebackpack.Configurator.MOD_CONFIG_DIR;
+
 
 public class BackpacksManager {
 
@@ -47,7 +48,7 @@ public class BackpacksManager {
 
     /**
      * This code is called Server Side !!!
-     * This code is code every time a player time is calculated
+     * This code is called every time a player time is calculated (every 2 seconds)
      * see PlayerTimeMeter.getInstance().registerTimeChangedEvent(BackpacksManager::getCorrectInventorySize);
      *
      * @param player the player
@@ -57,9 +58,9 @@ public class BackpacksManager {
         var timeIsGreaterThan = new AtomicBoolean(true);
         var lastRow = new AtomicReference<>((byte) -1);
         var count = new AtomicInteger(0);
-        SingleBackpack.config.sizes.forEach((keyTime, row) -> {
+        Configurator.getInstance().config.sizes.forEach((keyTime, row) -> {
             if (!timeIsGreaterThan.get()) return;
-            if (timeIsGreaterThan.get() && count.get() == SingleBackpack.config.sizes.size() - 1) {
+            if (timeIsGreaterThan.get() && count.get() == Configurator.getInstance().config.sizes.size() - 1) {
                 playerRows.put(player.getUuidAsString(), row);
                 sendDataToPlayer(player, row);
                 return;
@@ -115,6 +116,7 @@ public class BackpacksManager {
                     var files = backpacksFolder.listFiles();
                     if(files == null)return;
                     for (var file : files) {
+                        if(file.isDirectory())continue; // We don't have to copy backup folder
                         var now = LocalDateTime.now();
                         var dateFolderName = String.format("%d-%02d-%02d@%02d-%02d-%02d", now.getYear(), now.getMonthValue(), now.getDayOfMonth(), now.getHour(), now.getMinute(), now.getSecond());
                         var dateFolderFile = backpacksBackupFolderFile.toPath().resolve(dateFolderName).toFile();

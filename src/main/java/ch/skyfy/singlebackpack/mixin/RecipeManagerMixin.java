@@ -1,5 +1,6 @@
 package ch.skyfy.singlebackpack.mixin;
 
+import ch.skyfy.singlebackpack.Configurator;
 import ch.skyfy.singlebackpack.SingleBackpack;
 import com.google.gson.JsonElement;
 import net.minecraft.recipe.RecipeManager;
@@ -18,7 +19,7 @@ public class RecipeManagerMixin {
 
     @Inject(method = "apply", at = @At("HEAD"))
     public void interceptApply(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler, CallbackInfo info) {
-        if (!SingleBackpack.config.disableCraft)
+        if (!Configurator.getInstance().config.disableCraft)
             map.put(new Identifier("single_backpack", "backpack"), SingleBackpack.createBackpackRecipe());
     }
 

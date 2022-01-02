@@ -20,9 +20,7 @@ public class ClientSetup implements ClientModInitializer {
             if(client.player != null)
                 playerClientUUID = client.player.getUuidAsString();
         });
-        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-            playerClientUUID = "";
-        });
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> playerClientUUID = "");
         ScreenRegistry.register(SingleBackpack.BACKPACK_SCREEN_HANDLER, BackpackScreen::new);
     }
 }
