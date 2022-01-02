@@ -16,7 +16,9 @@ You can create your own ***sizes*** by settings a time in millis as key and numb
 max rows is 6
 
 ```diff
-- @@Important@@
+- text in red
++ text in green
+- Important
 - Values in the list must be sorted from smallest to largest. whether it is the size or the delay
 ```
 
