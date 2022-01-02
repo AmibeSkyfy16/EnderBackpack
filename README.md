@@ -15,12 +15,10 @@ You can create your own ***sizes*** by settings a time in millis as key and numb
 
 max rows is 6
 
-```diff
-- text in red
-+ text in green
-- Important
-- Values in the list must be sorted from smallest to largest. whether it is the size or the delay
-```
+
+**Important !**
+**Values in the list must be sorted from smallest to largest. whether it is the size or the delay**
+
 
 ## There are two way to use this mod
 1. Players receive a backpack when they log in (only if they don't already have one)
