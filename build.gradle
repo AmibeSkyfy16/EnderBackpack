@@ -9,7 +9,7 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-
+	maven {url = "https://maven.kyrptonaught.dev"} //quickshulker
 }
 
 dependencies {
@@ -23,6 +23,15 @@ dependencies {
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
 	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
+	optionalDependency("net.kyrptonaught:quickshulker:${project.quickshulker_version}")
+}
+
+def optionalDependency(String dep) {
+	dependencies.modImplementation (dep) {
+		exclude group: "net.fabricmc.fabric-api"
+		exclude module: "modmenu"
+	}
 }
 
 tasks.withType(JavaCompile).configureEach {

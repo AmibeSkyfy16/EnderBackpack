@@ -20,6 +20,9 @@
     ],
     "client": [
       "ch.skyfy.singlebackpack.client.ClientSetup"
+    ],
+    "quickshulker": [
+      "ch.skyfy.singlebackpack.compat.QuickShulkerCompat"
     ]
   },
   "mixins": [
