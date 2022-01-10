@@ -10,7 +10,7 @@ public class QuickShulkerCompat implements RegisterQuickShulker {
     public void registerProviders() {
         QSBackpackData backpackData = new QSBackpackData();
         new QuickOpenableRegistry.Builder(backpackData)
-                .setBlock(BackpackItem.class)
+                .setItem(BackpackItem.class)
                 .supportsBundleing(true)// should the item support bundling like insert/extract
                 .ignoreSingleStackCheck(false) //should the single stack requirement be ignored? If set to false, the item can only be used if it's a single item in a stack
                 .setOpenAction((player, itemStack) -> {
