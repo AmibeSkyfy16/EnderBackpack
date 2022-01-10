@@ -9,6 +9,8 @@ import com.google.gson.JsonObject;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
@@ -19,12 +21,16 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SingleBackpack implements ModInitializer {
 
@@ -57,6 +63,7 @@ public class SingleBackpack implements ModInitializer {
 
     private void registerEvents() {
         ServerEntityEvents.ENTITY_LOAD.register(this::givePlayerBackpack);
+        // TODO If player right click -> open backpack, but stop placing the block in the off hand
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -104,21 +111,14 @@ public class SingleBackpack implements ModInitializer {
 
         for (int i = 0; i < keys.size(); ++i) {
             individualKey = new JsonObject();
-            items.forEach(System.out::println);
-            type.forEach(System.out::println);
-            System.out.println("I " + i);
-
             individualKey.addProperty(type.get(i), items.get(i).toString()); //This will create a key in the form "type": "input", where type is either "item" or "tag", and input is our input item.
             keyList.add(keys.get(i) + "", individualKey); //Then we add this key to the main key object.
         }
-
         json.add("key", keyList);
-
         JsonObject result = new JsonObject();
         result.addProperty("item", output.toString());
         result.addProperty("count", 1);
         json.add("result", result);
-
         return json;
     }
 

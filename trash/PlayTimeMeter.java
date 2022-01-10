@@ -169,8 +169,6 @@ public class PlayTimeMeter {
             if(!getInstance().isPlayerOnline(uuid))return;
             var elapsed = System.currentTimeMillis() - startTime;
             time += elapsed;
-            System.out.println("Temps écoulé: " + elapsed);
-            System.out.println("Temps total: " + time);
             startTime = System.currentTimeMillis();
             try {
                 save(file, time);

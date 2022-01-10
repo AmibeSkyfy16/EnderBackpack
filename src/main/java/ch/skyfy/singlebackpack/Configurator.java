@@ -38,7 +38,6 @@ public final class Configurator {
     private Configurator() {
         createConfigDirectories();
         config = ConfigUtils.getOrCreateConfig(Config.class, "config.json");
-        System.out.println();
     }
 
 

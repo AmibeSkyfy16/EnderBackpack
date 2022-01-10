@@ -65,3 +65,16 @@ publishing {
 		}
 	}
 }
+
+build{
+	doLast {
+		copy {
+			from 'build/libs/singlebackpack-1.2.0.jar'
+			into 'C:\\Users\\colin\\Desktop\\fabric_0_12_12_TESTING\\mods'
+		}
+		copy {
+			from 'build/libs/singlebackpack-1.2.0.jar'
+			into 'C:\\Users\\colin\\curseforge\\minecraft\\Instances\\ClassicClient\\mods'
+		}
+	}
+}

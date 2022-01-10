@@ -97,7 +97,6 @@ public class BackpacksManager {
                     var row = nbt.getByte(client.player.getUuidAsString());
                     var date = nbt.getLong("date");
                     playerRows.put(client.player.getUuidAsString(), row);
-                    System.out.println(System.currentTimeMillis() + " ROW ADDED : " + row);
 
                     // Client will reply to server that he received the row,
                     var replyNbt = new NbtCompound();
