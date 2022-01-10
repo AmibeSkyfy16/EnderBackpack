@@ -30,19 +30,23 @@ public class BackpackItem extends Item {
                 if (!BackpacksManager.verificator.get(user.getUuidAsString()).clientRespond.get())
                     return TypedActionResult.consume(user.getStackInHand(hand));
 
-                user.openHandledScreen(new NamedScreenHandlerFactory() {
-                    @Override
-                    public Text getDisplayName() {
-                        return new TranslatableText("item.single_backpack.backpack");//lang/en_us.json
-                    }
-
-                    @Override
-                    public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-                        return new BackpackScreenHandler(syncId, inv, new BackpackInventory(BackpacksManager.playerRows.get(player.getUuidAsString()) * 9, user.getStackInHand(hand), user.getUuidAsString()));
-                    }
-                });
+                user.openHandledScreen(createScreenHandler(user, user.getStackInHand(hand)));
             }
         }
         return super.use(world, user, hand);
+    }
+
+    public static NamedScreenHandlerFactory createScreenHandler(PlayerEntity user, ItemStack stack) {
+        return new NamedScreenHandlerFactory() {
+            @Override
+            public Text getDisplayName() {
+                return new TranslatableText("item.single_backpack.backpack");//lang/en_us.json
+            }
+
+            @Override
+            public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+                return new BackpackScreenHandler(syncId, inv, new BackpackInventory(BackpacksManager.playerRows.get(player.getUuidAsString()) * 9, stack, user.getUuidAsString()));
+            }
+        };
     }
 }
