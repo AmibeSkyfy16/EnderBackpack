@@ -25,7 +25,7 @@ max rows is 6
 
   Here is the configuration of the **config.json** file to use the first way
 
-![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/master/1.18.2/config_first_way.png?raw=true)
+![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/1.18.2/images/config_first_way.png)
 
 2. Players have to craft the backpack
 
