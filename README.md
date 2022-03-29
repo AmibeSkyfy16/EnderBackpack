@@ -21,7 +21,7 @@ max rows is 6
 
 
 ## There are two way to use this mod
-1. Players receive a backpack when they log in (only if they don't already have one)
+1, Players receive a backpack when they log in (only if they don't already have one)
 
 Here is the configuration of the **config.json** file to use the first way
 
