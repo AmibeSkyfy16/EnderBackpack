@@ -26,9 +26,7 @@ max rows is 6
 2. Players have to craft the backpack<br/>Here is the configuration of the **config.json** file to use the second way
 
 ![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/1.18.2/images/config_second_way.png?raw=true)
-And this is the craft
-
-![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/1.18.2/images/craft.png?raw=true)
+And this is the craft<br/>![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/1.18.2/images/craft.png?raw=true)
 
 
 ## Other configurations
