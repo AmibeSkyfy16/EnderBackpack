@@ -4,7 +4,8 @@
   "package": "ch.skyfy.enderbackpack.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "RecipeManagerMixin"
+    "RecipeManagerMixin",
+    "ServerPlayerEntityMixin"
   ],
   "client": [],
   "injectors": {

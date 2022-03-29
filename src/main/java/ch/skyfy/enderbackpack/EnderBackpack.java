@@ -6,13 +6,9 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.event.server.ServerStartCallback;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -39,6 +35,7 @@ public class EnderBackpack implements ModInitializer {
     public static final ScreenHandlerType<BackpackScreenHandler> BACKPACK_SCREEN_HANDLER;
 
     static {
+        //noinspection deprecation
         BACKPACK_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier(MODID, "backpack_screen"), BackpackScreenHandler::new); //registers your screen handler
     }
 
@@ -57,6 +54,8 @@ public class EnderBackpack implements ModInitializer {
 
     private void registerEvents() {
         ServerEntityEvents.ENTITY_LOAD.register(this::givePlayerBackpack);
+
+
         // TODO If player right click -> open backpack, but stop placing the block in the off hand
     }
 

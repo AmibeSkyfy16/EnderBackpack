@@ -17,9 +17,8 @@ import java.util.Map;
 @Mixin(RecipeManager.class)
 public class RecipeManagerMixin {
     @Inject(method = "apply", at = @At("HEAD"))
-    public void interceptApply(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler, CallbackInfo info) {
+    public void apply(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler, CallbackInfo info) {
         if (!Configurator.getInstance().config.disableCraft)
             map.put(new Identifier("ender_backpack", "backpack"), EnderBackpack.createBackpackRecipe());
     }
-
 }
