@@ -22,7 +22,6 @@ max rows is 6
 
 ## There are two way to use this mod
 1. Players receive a backpack when they log in (only if they don't already have one)
-
 Here is the configuration of the **config.json** file to use the first way
 
 ![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/master/1.18.2/config_first_way.png?raw=true)
