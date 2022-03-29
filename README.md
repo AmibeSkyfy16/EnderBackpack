@@ -11,7 +11,7 @@ As the player spends more time on the server, the backpack will grow and the pla
 |   12   | 5*9 = 45         |
 |   36   | 6*9 = 54         |
 
-You can create your own ***sizes*** by settings a time in millis as key and a number of rows as value
+You can create your own ***sizes*** by settings a time in millisecond as key and a number of rows as value
 
 max rows is 6
 
@@ -25,9 +25,7 @@ max rows is 6
 
 ![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/1.18.2/images/config_first_way.png)
 
-2. Players have to craft the backpack
-
-  Here is the configuration of the **config.json** file to use the second way
+2. Players have to craft the backpack<br/>Here is the configuration of the **config.json** file to use the second way
 
 ![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/1.18.2/images/config_second_way.png?raw=true)
 And this is the craft
