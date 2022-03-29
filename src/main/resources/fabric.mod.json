@@ -1,36 +1,36 @@
 {
   "schemaVersion": 1,
-  "id": "singlebackpack",
+  "id": "enderbackpack",
   "version": "${version}",
 
-  "name": "singlebackpack",
-  "description": "singlebackpack",
+  "name": "enderbackpack",
+  "description": "enderbackpack",
   "authors": [
     "Skyfy16"
   ],
   "contact": {},
 
   "license": "MIT",
-  "icon": "assets/single_backpack/icon.png",
+  "icon": "assets/ender_backpack/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "ch.skyfy.singlebackpack.SingleBackpack"
+      "ch.skyfy.enderbackpack.EnderBackpack"
     ],
     "client": [
-      "ch.skyfy.singlebackpack.client.ClientSetup"
+      "ch.skyfy.enderbackpack.client.ClientSetup"
     ],
     "quickshulker": [
-      "ch.skyfy.singlebackpack.compat.QuickShulkerCompat"
+      "ch.skyfy.enderbackpack.compat.QuickShulkerCompat"
     ]
   },
   "mixins": [
-    "singlebackpack.mixins.json"
+    "enderbackpack.mixins.json"
   ],
 
   "depends": {
-    "fabricloader": ">=0.12.12",
+    "fabricloader": ">=0.13.3",
     "fabric": "*",
     "minecraft": "1.18.x",
     "java": ">=17"
