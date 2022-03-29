@@ -1,7 +1,7 @@
 # Description
 This mod adds a backpack, but with unique content per player. Even if you duplicate it, its contents will be identical to the first one. A bit like an enderchest
 
-As the player spends more time on the server, the backpack will grow and the player may be able to store more items. The default configuration is as follows:
+As the player spends more time on the server, the backpack will grow and the player will be able to store more items. The default configuration is as follows:
 | hours  | slots available                       |
 | ------ |:----------------:| 
 |    0   | 1*9 = 9          |
