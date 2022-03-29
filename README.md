@@ -11,7 +11,7 @@ As the player spends more time on the server, the backpack will grow and the pla
 |   12   | 5*9 = 45         |
 |   36   | 6*9 = 54         |
 
-You can create your own ***sizes*** by settings a time in millis as key and number of rows as value
+You can create your own ***sizes*** by settings a time in millis as key and a number of rows as value
 
 max rows is 6
 
