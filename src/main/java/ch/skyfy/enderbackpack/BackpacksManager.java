@@ -48,7 +48,6 @@ public class BackpacksManager {
     }
 
     /**
-     * This code is called Server Side !!!
      * This code is called every time a player time is calculated (every 2 seconds)
      * see PlayerTimeMeter.getInstance().registerTimeChangedEvent(BackpacksManager::getCorrectInventorySize);
      *
@@ -100,7 +99,6 @@ public class BackpacksManager {
 
     @SuppressWarnings("ConstantConditions")
     public static void initialize() {
-
         PlayerTimeMeter.getInstance().registerTimeChangedEvent(BackpacksManager::getCorrectInventorySize);
 
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
