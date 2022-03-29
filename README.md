@@ -24,15 +24,15 @@ max rows is 6
 1. Players receive a backpack when they log in (only if they don't already have one)
 Here is the configuration of the **config.json** file to use the first way
 
-![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/master/images/config_first_way.png?raw=true)
+![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/master/1.18.2/config_first_way.png?raw=true)
 
 2. Players have to craft the backpack
 Here is the configuration of the **config.json** file to use the second way
 
-![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/master/images/config_second_way.png?raw=true)
+![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/1.18.2/images/config_second_way.png?raw=true)
 And this is the craft
 
-![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/master/images/craft.png?raw=true)
+![Alt text](https://github.com/AmibeSkyfy16/EnderBackpack/blob/1.18.2/images/craft.png?raw=true)
 
 
 ## Other configurations
