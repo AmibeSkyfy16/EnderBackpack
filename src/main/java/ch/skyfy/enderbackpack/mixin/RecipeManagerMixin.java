@@ -16,6 +16,7 @@ import java.util.Map;
 
 @Mixin(RecipeManager.class)
 public class RecipeManagerMixin {
+    @SuppressWarnings("ConstantConditions")
     @Inject(method = "apply", at = @At("HEAD"))
     public void apply(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler, CallbackInfo info) {
         if (!Configurator.getInstance().config.disableCraft)

@@ -6,7 +6,7 @@ public class Config {
 
     private static final boolean defaultGivePlayerBackpack = false;
     private static final boolean defaultDisableCraft = false;
-    private static final boolean defaultDropBackpackContentWhenDying = true; // TODO Implements
+    private static final boolean defaultDropBackpackContentWhenDying = true;
     private static final LinkedHashMap<Long, Byte> defaultSizes = new LinkedHashMap<>() {{
         put(0L, (byte) 1);
         put(3_600_000L, (byte) 2); // 1 hours

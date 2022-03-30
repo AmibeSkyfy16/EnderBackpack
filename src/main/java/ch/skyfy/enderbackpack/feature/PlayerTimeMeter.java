@@ -26,7 +26,7 @@ import static ch.skyfy.enderbackpack.ConstantsMessage.CONFIG_FOLDER_COULD_NOT_BE
  * The purpose of this class is to record the player's time.
  * <p>
  * PlayerTimeMeter will use a Timer to calculate an elapsed time and keep total player time up to date
- * The Timer is called every 2 secondes, but only every 6 minutes, a backup of player total time will be saved to a .json file
+ * The Timer is called every 2 secondes, but only every 12 minutes, a backup of player total time will be saved to a .json file
  * <p>
  * PlayerTimeMeter has also an inner interface called TimeChangedEvent
  * Class BackpackManager will register this interface for being notified when the player time changed

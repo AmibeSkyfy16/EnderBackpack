@@ -42,9 +42,9 @@ public class EnderBackpack implements ModInitializer {
     @Override
     public void onInitialize() {
         if (Configurator.initialize()) return;
-        registerEvents();
         PlayerTimeMeter.initialize();
         BackpacksManager.initialize();
+        registerEvents();
         registerItem();
     }
 
@@ -54,8 +54,6 @@ public class EnderBackpack implements ModInitializer {
 
     private void registerEvents() {
         ServerEntityEvents.ENTITY_LOAD.register(this::givePlayerBackpack);
-
-
         // TODO If player right click -> open backpack, but stop placing the block in the off hand
     }
 
