@@ -1,3 +1,5 @@
+![](./docs/readme.svg)
+
 # Description
 This mod adds a backpack, but with unique content per player. Even if you duplicate it, its contents will be identical to the first one. A bit like an enderchest
 
