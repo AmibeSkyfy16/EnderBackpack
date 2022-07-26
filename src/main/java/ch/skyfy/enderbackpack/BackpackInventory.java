@@ -13,7 +13,6 @@ import java.io.IOException;
 
 import static ch.skyfy.enderbackpack.Configurator.MOD_CONFIG_DIR;
 
-
 public class BackpackInventory implements Inventory {
 
     private final DefaultedList<ItemStack> list;
