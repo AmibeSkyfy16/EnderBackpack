@@ -29,7 +29,10 @@ dependencies {
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${properties["fabric_version"]}")
 	modImplementation("net.fabricmc:fabric-language-kotlin:${properties["fabric_kotlin_version"]}")
 
-//	modImplementation("net.kyrptonaught:quickshulker:${property("quickshulker_version")}")
+	modImplementation("net.kyrptonaught:quickshulker:${property("quickshulker_version")}"){
+		exclude(group = "net.fabricmc.fabric-api")
+		exclude(module = "modmenu")
+	}
 
 	implementation("org.apache.commons:commons-lang3:3.12.0")
 
