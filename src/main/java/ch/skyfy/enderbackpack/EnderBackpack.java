@@ -37,7 +37,7 @@ public class EnderBackpack implements ModInitializer {
             new ExtendedScreenHandlerType<>(BackpackScreenHandler::new);
 
     static {
-        Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "screen_handler"), EXTENDED_SCREEN_HANDLER_TYPE);
+        Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "backpack_screen"), EXTENDED_SCREEN_HANDLER_TYPE);
 //        BACKPACK_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier(MODID, "backpack_screen"), BackpackScreenHandler::new); //registers your screen handler
     }
 

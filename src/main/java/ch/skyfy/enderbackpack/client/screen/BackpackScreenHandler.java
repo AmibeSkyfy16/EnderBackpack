@@ -4,6 +4,7 @@ import ch.skyfy.enderbackpack.BackpackInventory;
 import ch.skyfy.enderbackpack.EnderBackpack;
 import ch.skyfy.enderbackpack.client.screen.slot.BackpackSlot;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -22,16 +23,12 @@ public class BackpackScreenHandler extends ScreenHandler {
 
     public BackpackScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
         super(EnderBackpack.EXTENDED_SCREEN_HANDLER_TYPE, syncId);
-        var stack = buf.readItemStack();
         this.buf = buf;
         row = (byte) buf.getInt(0);
-
-        EnderBackpack.LOGGER.info("[BackpackScreenHandler.class]  env type is: "+FabricLoader.getInstance().getEnvironmentType().name()+", row is : " + row);
-
-
-        inventory = new BackpackInventory(row * 9, stack, playerInventory.player.getUuidAsString());
+        inventory = new BackpackInventory(row * 9, buf.readItemStack(), playerInventory.player.getUuidAsString());
         this.buildContainer(playerInventory);
         this.inventory.onOpen(playerInventory.player);
+        EnderBackpack.LOGGER.info("[BackpackScreenHandler.class]  env type is: "+FabricLoader.getInstance().getEnvironmentType().name()+", row is : " + row);
     }
 
     public void buildContainer(PlayerInventory playerInventory) {
@@ -40,16 +37,16 @@ public class BackpackScreenHandler extends ScreenHandler {
         int k;
         for (j = 0; j < row; ++j) {
             for (k = 0; k < 9; ++k) {
-                this.addSlot(new BackpackSlot(inventory, k + j * 9, 8 + k * 18, 18 + j * 18));
+                addSlot(new BackpackSlot(inventory, k + j * 9, 8 + k * 18, 18 + j * 18));
             }
         }
         for (j = 0; j < 3; ++j) {
             for (k = 0; k < 9; ++k) {
-                this.addSlot(new Slot(playerInventory, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 + i));
+                addSlot(new Slot(playerInventory, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 + i));
             }
         }
         for (j = 0; j < 9; ++j) {
-            this.addSlot(new Slot(playerInventory, j, 8 + j * 18, 161 + i));
+            addSlot(new Slot(playerInventory, j, 8 + j * 18, 161 + i));
         }
     }
 

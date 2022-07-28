@@ -9,6 +9,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.util.registry.Registry;
 
 @Environment(EnvType.CLIENT)
 public class ClientSetup implements ClientModInitializer {
@@ -25,7 +26,6 @@ public class ClientSetup implements ClientModInitializer {
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> playerClientUUID = "");
 
         HandledScreens.register(EnderBackpack.EXTENDED_SCREEN_HANDLER_TYPE, BackpackScreen::new);
-//        ScreenRegistry.register(EnderBackpack.BACKPACK_SCREEN_HANDLER, BackpackScreen::new);
 
         registerEvents();
     }

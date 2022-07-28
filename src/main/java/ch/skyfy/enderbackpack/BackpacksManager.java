@@ -118,7 +118,7 @@ public class BackpacksManager {
             });
         } else {
             ServerPlayNetworking.registerGlobalReceiver(new Identifier("rowreceived"), (server, player, handler, buf, responseSender) -> {
-                System.out.println("ServerPlayNetworking.registerGlobalReceiver(new Identifier(\"rowreceived\")");
+//                System.out.println("ServerPlayNetworking.registerGlobalReceiver(new Identifier(\"rowreceived\")");
                 var nbt = (NbtCompound) buf.readNbt();
                 server.execute(() -> {
                     var row = nbt.getByte(player.getUuidAsString());
