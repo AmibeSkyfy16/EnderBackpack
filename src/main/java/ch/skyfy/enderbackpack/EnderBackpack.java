@@ -8,12 +8,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -24,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-public class EnderBackpack2 implements ModInitializer {
+public class EnderBackpack implements ModInitializer {
 
     public static final String MODID = "ender_backpack";
 
@@ -32,11 +31,14 @@ public class EnderBackpack2 implements ModInitializer {
 
     public static final Item BACKPACK = new BackpackItem(new Item.Settings().group(ItemGroup.MISC).maxCount(1));//creates your backpack
 
-    public static final ScreenHandlerType<BackpackScreenHandler> BACKPACK_SCREEN_HANDLER;
+//    public static final ScreenHandlerType<BackpackScreenHandler> BACKPACK_SCREEN_HANDLER;
+
+    public static final ExtendedScreenHandlerType<BackpackScreenHandler> EXTENDED_SCREEN_HANDLER_TYPE =
+            new ExtendedScreenHandlerType<>(BackpackScreenHandler::new);
 
     static {
-        //noinspection deprecation
-        BACKPACK_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier(MODID, "backpack_screen"), BackpackScreenHandler::new); //registers your screen handler
+        Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "screen_handler"), EXTENDED_SCREEN_HANDLER_TYPE);
+//        BACKPACK_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier(MODID, "backpack_screen"), BackpackScreenHandler::new); //registers your screen handler
     }
 
     @Override

@@ -84,4 +84,29 @@ tasks {
 		}
 	}
 
+
+	val copyJarToServer = register("copyJarToServer") {
+		println("copying mod to server")
+		copyFile("build/libs/enderbackpack-1.5.0_1.19.1.jar", project.property("ServerModsFolder") as String)
+	}
+
+	val copyJarToClient = register("copyJarToClient") {
+		println("copying mod to server")
+		copyFile("build/libs/enderbackpack-1.5.0_1.19.1.jar", project.property("ClientModsFolder") as String)
+	}
+
+	build {
+		doLast {
+			copyJarToServer.get()
+			copyJarToClient.get()
+		}
+	}
+
+}
+
+fun copyFile(src: String, dest: String) {
+	copy {
+		from(src)
+		into(dest)
+	}
 }

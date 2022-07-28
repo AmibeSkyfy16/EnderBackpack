@@ -1,34 +1,35 @@
 package ch.skyfy.enderbackpack.client.screen;
 
-import ch.skyfy.enderbackpack.BackpacksManager;
+import ch.skyfy.enderbackpack.BackpackInventory;
 import ch.skyfy.enderbackpack.EnderBackpack;
-import ch.skyfy.enderbackpack.client.ClientSetup;
 import ch.skyfy.enderbackpack.client.screen.slot.BackpackSlot;
-import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-
 
 public class BackpackScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
 
-    private final Byte row;
+    public final Byte row;
 
-    public BackpackScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(BackpacksManager.playerRows.get(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT ? ClientSetup.playerClientUUID : playerInventory.player.getUuidAsString()) * 9));//9 * 6 slots
-    }
+    public PacketByteBuf buf;
 
-    public BackpackScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        super(EnderBackpack.BACKPACK_SCREEN_HANDLER, syncId);
-        row = BackpacksManager.playerRows.get(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT ? ClientSetup.playerClientUUID : playerInventory.player.getUuidAsString());
-        this.inventory = inventory;
+    public BackpackScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+        super(EnderBackpack.EXTENDED_SCREEN_HANDLER_TYPE, syncId);
+        var stack = buf.readItemStack();
+        this.buf = buf;
+        row = (byte) buf.getInt(0);
+
+        EnderBackpack.LOGGER.info("[BackpackScreenHandler.class]  env type is: "+FabricLoader.getInstance().getEnvironmentType().name()+", row is : " + row);
+
+
+        inventory = new BackpackInventory(row * 9, stack, playerInventory.player.getUuidAsString());
         this.buildContainer(playerInventory);
         this.inventory.onOpen(playerInventory.player);
     }

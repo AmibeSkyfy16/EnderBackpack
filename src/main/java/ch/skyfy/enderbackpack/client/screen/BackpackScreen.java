@@ -1,8 +1,6 @@
 package ch.skyfy.enderbackpack.client.screen;
 
-import ch.skyfy.enderbackpack.BackpacksManager;
 import ch.skyfy.enderbackpack.EnderBackpack;
-import ch.skyfy.enderbackpack.client.ClientSetup;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,7 +18,12 @@ public class BackpackScreen extends HandledScreen<BackpackScreenHandler> {
 
     public BackpackScreen(BackpackScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        row = BackpacksManager.playerRows.get(ClientSetup.playerClientUUID);
+
+        EnderBackpack.LOGGER.info("[BackpackScreen.class] CLIENT SIDE, row is : " + handler.row);
+
+        this.row = handler.row;
+
+//        row = BackpacksManager.playerRows.get(ClientSetup.playerClientUUID);
         this.backgroundHeight = 114 + row * 18;
         this.playerInventoryTitleY = this.backgroundHeight - 94;
     }
