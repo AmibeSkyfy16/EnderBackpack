@@ -39,13 +39,6 @@ dependencies {
 	testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.10")
 }
 
-//def optionalDependency(String dep) {
-//	dependencies.modImplementation (dep) {
-//		exclude group: "net.fabricmc.fabric-api"
-//		exclude module: "modmenu"
-//	}
-//}
-
 tasks {
 
 	val javaVersion = JavaVersion.VERSION_17
@@ -76,11 +69,11 @@ tasks {
 		options.release.set(javaVersion.toString().toInt())
 	}
 
-//	named<Jar>("jar") {
-//		from("LICENSE") {
-//			rename { "${it}_${archivesName}" }
-//		}
-//	}
+	named<Jar>("jar") {
+		from("LICENSE") {
+			rename { "${it}_${base.archivesName}" }
+		}
+	}
 
 	named<Test>("test") { // https://stackoverflow.com/questions/40954017/gradle-how-to-get-output-from-test-stderr-stdout-into-console
 		useJUnitPlatform()
