@@ -24,7 +24,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-public class EnderBackpack implements ModInitializer {
+public class EnderBackpack2 implements ModInitializer {
 
     public static final String MODID = "ender_backpack";
 
