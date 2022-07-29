@@ -2,6 +2,7 @@ package ch.skyfy.enderbackpack;
 
 import ch.skyfy.enderbackpack.feature.PlayerTimeMeter;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -24,6 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static ch.skyfy.enderbackpack.Configurator.MOD_CONFIG_DIR;
 
 
+//@Environment(EnvType.SERVER)
 public class BackpacksManager {
 
     /**

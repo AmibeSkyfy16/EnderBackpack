@@ -4,17 +4,12 @@ import ch.skyfy.enderbackpack.client.screen.BackpackScreenHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.EnderEyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -40,27 +35,23 @@ public class BackpackItem extends Item {
                 if (!BackpacksManager.verificator.get(user.getUuidAsString()).clientRespond.get())
                     return TypedActionResult.consume(user.getStackInHand(hand));
 
-                EnderBackpack.LOGGER.info("[BackpackItem.class] -> server side");
+                EnderBackpack.LOGGER.info("[BackpackItem.class] -> side: " + FabricLoader.getInstance().getEnvironmentType().name());
                 user.openHandledScreen(createScreenHandler(user, user.getStackInHand(hand)));
             }
-        }else{
-//            if(!user.isSneaking()){
-//                HandledScreens.open(EnderBackpack.EXTENDED_SCREEN_HANDLER_TYPE, MinecraftClient.getInstance(), );
-//            }
         }
         return super.use(world, user, hand);
     }
 
     public static ExtendedScreenHandlerFactory createScreenHandler(PlayerEntity user, ItemStack stack) {
+        System.out.println("side : " + FabricLoader.getInstance().getEnvironmentType().name());
+
+        var buf = PacketByteBufs.create().writeVarInt(BackpacksManager.playerRows.get(user.getUuidAsString())).writeItemStack(stack);
+
         return new ExtendedScreenHandlerFactory() {
 
             @Override
             public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-                return new BackpackScreenHandler(syncId, inv,
-                        PacketByteBufs.create()
-                                .writeVarInt(BackpacksManager.playerRows.get(player.getUuidAsString()))
-                                .writeItemStack(stack)
-                );
+                return new BackpackScreenHandler(syncId, inv, buf);
             }
 
             @Override
@@ -69,7 +60,9 @@ public class BackpackItem extends Item {
             }
 
             @Override
-            public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {}
+            public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+                buf.writeVarInt(BackpacksManager.playerRows.get(user.getUuidAsString())).writeItemStack(stack);
+            }
         };
     }
 }
