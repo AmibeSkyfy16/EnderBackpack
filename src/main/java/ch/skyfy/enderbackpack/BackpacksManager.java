@@ -29,7 +29,7 @@ public class BackpacksManager {
     /**
      * Allows knowing what is the current size of the backpack of each player
      */
-    public static final Map<String, Byte> playerRows = new HashMap<>();
+    public static final Map<String, Integer> playerRows = new HashMap<>();
 
     /**
      * contains a key that is an uuid and a DataChecker object
@@ -42,10 +42,10 @@ public class BackpacksManager {
      */
     public static class DataChecker {
         public Long date;
-        public Byte row;
+        public int row;
         public AtomicBoolean clientRespond;
 
-        public DataChecker(Byte row, AtomicBoolean clientRespond) {
+        public DataChecker(int row, AtomicBoolean clientRespond) {
             this.date = System.currentTimeMillis();
             this.row = row;
             this.clientRespond = clientRespond;
@@ -63,8 +63,8 @@ public class BackpacksManager {
      * @param time   the new total time played for the player on this server
      */
     public static void growBackpack(PlayerEntity player, Long time) {
-        var targetRow = (byte) -1;
-        for (Map.Entry<Long, Byte> entry : Configurator.getInstance().config.sizes.entrySet()) {
+        var targetRow = -1;
+        for (Map.Entry<Long, Integer> entry : Configurator.getInstance().config.sizes.entrySet()) {
             if (time < entry.getKey()) break;
             targetRow = entry.getValue();
         }
@@ -83,11 +83,11 @@ public class BackpacksManager {
      * @param serverPlayerEntity player
      * @param row                row
      */
-    public static void sendDataToPlayer(ServerPlayerEntity serverPlayerEntity, Byte row) {
+    public static void sendDataToPlayer(ServerPlayerEntity serverPlayerEntity, int row) {
         var data = new DataChecker(row, new AtomicBoolean(false));
         verificator.put(serverPlayerEntity.getUuidAsString(), data);
         ServerPlayNetworking.send(serverPlayerEntity, new Identifier("rowsent"), PacketByteBufs.create().writeNbt(new NbtCompound() {{
-            putByte(serverPlayerEntity.getUuidAsString(), row);
+            putInt(serverPlayerEntity.getUuidAsString(), row);
             putLong("date", data.date);
         }}));
     }
@@ -102,16 +102,16 @@ public class BackpacksManager {
     private static void registerCommunication() {
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             ClientPlayNetworking.registerGlobalReceiver(new Identifier("rowsent"), (client, handler, buf, responseSender) -> {
-                System.out.println("ClientPlayNetworking.registerGlobalReceiver(new Identifier(\"rowsent\")");
+//                System.out.println("ClientPlayNetworking.registerGlobalReceiver(new Identifier(\"rowsent\")");
                 var nbt = buf.readNbt();
                 client.execute(() -> {
-                    var row = nbt.getByte(client.player.getUuidAsString());
+                    var row = nbt.getInt(client.player.getUuidAsString());
                     var date = nbt.getLong("date");
                     playerRows.put(client.player.getUuidAsString(), row);
 
                     // Client will reply to server that he received the row,
                     var replyNbt = new NbtCompound();
-                    replyNbt.putByte(client.player.getUuidAsString(), row);
+                    replyNbt.putInt(client.player.getUuidAsString(), row);
                     replyNbt.putLong("date", date);
                     ClientPlayNetworking.send(new Identifier("rowreceived"), PacketByteBufs.create().writeNbt(replyNbt));
                 });
@@ -121,7 +121,7 @@ public class BackpacksManager {
 //                System.out.println("ServerPlayNetworking.registerGlobalReceiver(new Identifier(\"rowreceived\")");
                 var nbt = (NbtCompound) buf.readNbt();
                 server.execute(() -> {
-                    var row = nbt.getByte(player.getUuidAsString());
+                    var row = nbt.getInt(player.getUuidAsString());
                     var date = nbt.getLong("date");
                     var data = verificator.get(player.getUuidAsString());
                     if (data.date == date && data.row == row) {

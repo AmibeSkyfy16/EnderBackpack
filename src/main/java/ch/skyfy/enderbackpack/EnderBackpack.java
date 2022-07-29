@@ -31,14 +31,11 @@ public class EnderBackpack implements ModInitializer {
 
     public static final Item BACKPACK = new BackpackItem(new Item.Settings().group(ItemGroup.MISC).maxCount(1));//creates your backpack
 
-//    public static final ScreenHandlerType<BackpackScreenHandler> BACKPACK_SCREEN_HANDLER;
-
     public static final ExtendedScreenHandlerType<BackpackScreenHandler> EXTENDED_SCREEN_HANDLER_TYPE =
             new ExtendedScreenHandlerType<>(BackpackScreenHandler::new);
 
     static {
         Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "backpack_screen"), EXTENDED_SCREEN_HANDLER_TYPE);
-//        BACKPACK_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier(MODID, "backpack_screen"), BackpackScreenHandler::new); //registers your screen handler
     }
 
     @Override

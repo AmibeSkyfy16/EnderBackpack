@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier;
 @Environment(EnvType.CLIENT)
 public class BackpackScreen extends HandledScreen<BackpackScreenHandler> {
 
-    private final Byte row;
+    private final int row;
 
     public BackpackScreen(BackpackScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);

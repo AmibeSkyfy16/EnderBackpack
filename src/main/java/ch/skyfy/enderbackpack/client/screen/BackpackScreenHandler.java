@@ -17,14 +17,14 @@ public class BackpackScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
 
-    public final Byte row;
+    public final int row;
 
     public PacketByteBuf buf;
 
     public BackpackScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
         super(EnderBackpack.EXTENDED_SCREEN_HANDLER_TYPE, syncId);
         this.buf = buf;
-        row = (byte) buf.getInt(0);
+        row = buf.readVarInt();
         inventory = new BackpackInventory(row * 9, buf.readItemStack(), playerInventory.player.getUuidAsString());
         this.buildContainer(playerInventory);
         this.inventory.onOpen(playerInventory.player);

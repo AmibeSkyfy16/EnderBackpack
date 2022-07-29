@@ -58,8 +58,8 @@ public class BackpackItem extends Item {
             public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
                 return new BackpackScreenHandler(syncId, inv,
                         PacketByteBufs.create()
-                                .writeItemStack(stack)
                                 .writeVarInt(BackpacksManager.playerRows.get(player.getUuidAsString()))
+                                .writeItemStack(stack)
                 );
             }
 
