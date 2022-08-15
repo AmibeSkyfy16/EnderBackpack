@@ -56,7 +56,7 @@ tasks {
 	}
 
 	named<Wrapper>("wrapper") {
-		gradleVersion = "7.5"
+		gradleVersion = "7.5.1"
 		distributionType = Wrapper.DistributionType.ALL
 	}
 
@@ -87,12 +87,12 @@ tasks {
 
 	val copyJarToServer = register("copyJarToServer") {
 		println("copying mod to server")
-		copyFile("build/libs/enderbackpack-1.5.0_1.19.1.jar", project.property("ServerModsFolder") as String)
+		copyFile("build/libs/enderbackpack-1.5.1_1.19.2.jar", project.property("ServerModsFolder") as String)
 	}
 
 	val copyJarToClient = register("copyJarToClient") {
 		println("copying mod to server")
-		copyFile("build/libs/enderbackpack-1.5.0_1.19.1.jar", project.property("ClientModsFolder") as String)
+		copyFile("build/libs/enderbackpack-1.5.1_1.19.2.jar", project.property("ClientModsFolder") as String)
 	}
 
 	build {
