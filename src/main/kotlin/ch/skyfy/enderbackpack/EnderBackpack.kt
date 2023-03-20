@@ -9,7 +9,6 @@ import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.gui.screen.ingame.HandledScreens
 import net.minecraft.screen.ScreenHandlerType
-import net.minecraft.util.registry.Registry
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.nio.file.Path

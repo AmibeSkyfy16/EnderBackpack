@@ -51,18 +51,7 @@ public class BackpackScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public boolean canUse(PlayerEntity player) {
-        return true;
-    }
-
-    @Override
-    public void close(PlayerEntity player) {
-        super.close(player);
-        this.inventory.onClose(player);
-    }
-
-    @Override
-    public ItemStack transferSlot(PlayerEntity player, int index) {
+    public ItemStack quickMove(PlayerEntity player, int index) {
         ItemStack stack = ItemStack.EMPTY;
         Slot slot = this.getSlot(index);
         if (slot != null && slot.hasStack()) {
@@ -83,4 +72,44 @@ public class BackpackScreenHandler extends ScreenHandler {
         }
         return stack;
     }
+
+    @Override
+    public boolean canUse(PlayerEntity player) {
+        return true;
+    }
+
+//    @Override
+//    public void close(PlayerEntity player) {
+//        super.close(player);
+//        this.inventory.onClose(player);
+//    }
+
+    @Override
+    public void onClosed(PlayerEntity player) {
+        super.onClosed(player);
+        this.inventory.onClose(player);
+    }
+
+    //    @Override
+//    public ItemStack transferSlot(PlayerEntity player, int index) {
+//        ItemStack stack = ItemStack.EMPTY;
+//        Slot slot = this.getSlot(index);
+//        if (slot != null && slot.hasStack()) {
+//            final ItemStack stack2 = slot.getStack();
+//            stack = stack2.copy();
+//            if (index < this.inventory.size()) {
+//                if (!this.insertItem(stack2, this.inventory.size(), this.slots.size(), true)) {
+//                    return ItemStack.EMPTY;
+//                }
+//            } else if (!this.insertItem(stack2, 0, this.inventory.size(), false)) {
+//                return ItemStack.EMPTY;
+//            }
+//            if (stack2.isEmpty()) {
+//                slot.setStack(ItemStack.EMPTY);
+//            } else {
+//                slot.markDirty();
+//            }
+//        }
+//        return stack;
+//    }
 }

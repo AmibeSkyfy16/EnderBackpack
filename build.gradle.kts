@@ -56,8 +56,8 @@ tasks {
 	}
 
 	named<Wrapper>("wrapper") {
-		gradleVersion = "7.5.1"
-		distributionType = Wrapper.DistributionType.ALL
+		gradleVersion = "8.0.2"
+		distributionType = Wrapper.DistributionType.BIN
 	}
 
 	named<KotlinCompile>("compileKotlin") {
@@ -71,7 +71,7 @@ tasks {
 
 	named<Jar>("jar") {
 		from("LICENSE") {
-			rename { "${it}_${base.archivesName}" }
+			rename { "${it}_${base.archivesName.get()}" }
 		}
 	}
 
@@ -87,12 +87,12 @@ tasks {
 
 	val copyJarToServer = register("copyJarToServer") {
 		println("copying mod to server")
-		copyFile("build/libs/enderbackpack-1.5.1_1.19.2.jar", project.property("ServerModsFolder") as String)
+		copyFile("build/libs/enderbackpack-1.5.2_1.19.4.jar", project.property("ServerModsFolder") as String)
 	}
 
 	val copyJarToClient = register("copyJarToClient") {
 		println("copying mod to server")
-		copyFile("build/libs/enderbackpack-1.5.1_1.19.2.jar", project.property("ClientModsFolder") as String)
+		copyFile("build/libs/enderbackpack-1.5.2_1.19.4.jar", project.property("ClientModsFolder") as String)
 	}
 
 	build {

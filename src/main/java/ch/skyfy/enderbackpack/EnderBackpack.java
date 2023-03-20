@@ -6,20 +6,20 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,13 +31,14 @@ public class EnderBackpack implements ModInitializer {
 
     public static final Logger LOGGER = LogManager.getLogger("EnderBackpack");
 
-    public static final Item BACKPACK = new BackpackItem(new Item.Settings().group(ItemGroup.MISC).maxCount(1));//creates your backpack
+    public static final Item BACKPACK = new BackpackItem(new Item.Settings().maxCount(1));//creates your backpack
+//    public static final Item BACKPACK = new BackpackItem(new Item.Settings().group(ItemGroup.MISC).maxCount(1));//creates your backpack
 
     public static final ExtendedScreenHandlerType<BackpackScreenHandler> EXTENDED_SCREEN_HANDLER_TYPE =
             new ExtendedScreenHandlerType<>(BackpackScreenHandler::new);
 
     static {
-        Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "backpack_screen"), EXTENDED_SCREEN_HANDLER_TYPE);
+        Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "backpack_screen"), EXTENDED_SCREEN_HANDLER_TYPE);
     }
 
     @Override
@@ -50,7 +51,8 @@ public class EnderBackpack implements ModInitializer {
     }
 
     private void registerItem() {
-        Registry.register(Registry.ITEM, new Identifier(MODID, "backpack"), BACKPACK);
+        Registry.register(Registries.ITEM, new Identifier(MODID, "backpack"), BACKPACK);
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.add(BACKPACK));
     }
 
     private void registerEvents() {
