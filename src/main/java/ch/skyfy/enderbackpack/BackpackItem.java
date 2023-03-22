@@ -32,10 +32,10 @@ public class BackpackItem extends Item {
                 // If server change row, ask client to change row also, but client not reply, we will skip the code
 
                 // TODO i think we dont need this anymore
-                if (!BackpacksManager.verificator.get(user.getUuidAsString()).clientRespond.get())
-                    return TypedActionResult.consume(user.getStackInHand(hand));
+//                if (!BackpacksManager.verificator.get(user.getUuidAsString()).clientRespond.get())
+//                    return TypedActionResult.consume(user.getStackInHand(hand));
 
-                EnderBackpack.LOGGER.info("[BackpackItem.class] -> side: " + FabricLoader.getInstance().getEnvironmentType().name());
+//                EnderBackpack.LOGGER.info("[BackpackItem.class] -> side: " + FabricLoader.getInstance().getEnvironmentType().name());
                 user.openHandledScreen(createScreenHandler(user, user.getStackInHand(hand)));
             }
         }
@@ -43,7 +43,7 @@ public class BackpackItem extends Item {
     }
 
     public static ExtendedScreenHandlerFactory createScreenHandler(PlayerEntity user, ItemStack stack) {
-        System.out.println("side : " + FabricLoader.getInstance().getEnvironmentType().name());
+//        System.out.println("side : " + FabricLoader.getInstance().getEnvironmentType().name());
 
         var buf = PacketByteBufs.create().writeVarInt(BackpacksManager.playerRows.get(user.getUuidAsString())).writeItemStack(stack);
 

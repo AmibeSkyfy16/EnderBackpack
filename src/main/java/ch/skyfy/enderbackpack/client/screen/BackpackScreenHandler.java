@@ -28,7 +28,7 @@ public class BackpackScreenHandler extends ScreenHandler {
         inventory = new BackpackInventory(row * 9, buf.readItemStack(), playerInventory.player.getUuidAsString());
         this.buildContainer(playerInventory);
         this.inventory.onOpen(playerInventory.player);
-        EnderBackpack.LOGGER.info("[BackpackScreenHandler.class]  env type is: "+FabricLoader.getInstance().getEnvironmentType().name()+", row is : " + row);
+//        EnderBackpack.LOGGER.info("[BackpackScreenHandler.class]  env type is: "+FabricLoader.getInstance().getEnvironmentType().name()+", row is : " + row);
     }
 
     public void buildContainer(PlayerInventory playerInventory) {

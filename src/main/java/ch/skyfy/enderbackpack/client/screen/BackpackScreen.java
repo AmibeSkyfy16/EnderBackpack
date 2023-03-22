@@ -21,7 +21,7 @@ public class BackpackScreen extends HandledScreen<BackpackScreenHandler> {
         row = handler.row;
         backgroundHeight = 114 + row * 18;
         playerInventoryTitleY = backgroundHeight - 94;
-        EnderBackpack.LOGGER.info("[BackpackScreen.class] CLIENT SIDE, row is : " + handler.row);
+//        EnderBackpack.LOGGER.info("[BackpackScreen.class] CLIENT SIDE, row is : " + handler.row);
     }
 
     @Override
